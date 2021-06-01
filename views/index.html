@@ -1,0 +1,144 @@
+{{ define "content" }}
+<div class="container">
+    <div class="top-bar">
+        <div class="top-bar-left-btn"></div>
+        <div class="middle-title">와인콕</div>
+        <div class="top-bar-right-btn">
+            <div class="feedback-btn"></div>
+            <div class="feedback-text">피드백</div>
+        </div>
+
+    </div>
+    <div class="middle-bar">
+        <div class="middle-top-divider"></div>
+        <div class="middle-bar-text">네 개의 질문만 답해주세요.<br>와인콕이 딱 맞는 와인 찾아드릴게요</div>
+    </div>
+    <div class="question-container">
+        <div class="question question-1 active" onclick=clickQ1() id="q1-container">
+            <div class="question-title-row">
+                <div><span class="question-num">1</span> <span class="question-text">어디서 사실거에요?</span></div>
+                <div class="d-none question-response pickup-location" id="pickUpLocation"></div>
+            </div>
+            <div class="store-selector">
+                <select class="form-select" aria-label="select store type">
+                    <option selected>마트/백화점</option>
+                    <option value="lottemart">롯데마트</option>
+                    <option value="lottedepartment">롯데 백화점</option>
+                    <option value="emart">이마트</option>
+                    <option value="ssg">신세계백화점</option>
+                </select>
+            </div>
+            <div id="map"></div>
+        </div>
+        <div class="question question-2" onclick=clickQ2()>
+            <div class="question-title-row">
+                <div><span class="question-num">2</span> <span class="question-text">레드 or 화이트 와인</span></div>
+                <div class="d-none question-response wine-type" id="wineType"></div>
+            </div>
+            <div class="wine-selector-row d-none">
+                <div class="wine-selector red">
+                    <div class="wine-image red"></div>
+                    <div class="wine-desc red">레드 와인</div>
+                </div>
+                <div class="wine-selector white">
+                    <div class="wine-image white"></div>
+                    <div class="wine-desc white">화이트/로제 와인</div>
+                </div>
+            </div>
+        </div>
+        <div class="question question-3" onclick=clickQ3()>
+            <div class="question-title-row">
+                <div><span class="question-num">3</span> <span class="question-text">가격대</span></div>
+                <div class="d-none question-response price-range" id="priceRange"></div>
+            </div>
+            <div class="d-none price-selector">
+                <div class="price-selector-row">
+                    <div class="price-rect rect1">
+                        <div class="price-rect-rectangle"></div>
+                        <div class="price-rect-text">￦1만↓</div>
+                    </div>
+                    <div class="price-line line1"></div>
+                    <div class="price-rect rect2">
+                        <div class="price-rect-rectangle"></div>
+                        <div class="price-rect-text">￦1만</div>
+                    </div>
+                    <div class="price-line line2"></div>
+                    <div class="price-rect rect3">
+                        <div class="price-rect-rectangle"></div>
+                        <div class="price-rect-text">₩2만</div>
+                    </div>
+                    <div class="price-line line3"></div>
+                    <div class="price-rect rect4">
+                        <div class="price-rect-rectangle"></div>
+                        <div class="price-rect-text">￦3~4만</div>
+                    </div>
+                    <div class="price-line line4"></div>
+                    <div class="price-rect rect5">
+                        <div class="price-rect-rectangle"></div>
+                        <div class="price-rect-text">₩4만↑</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="question question-4" onclick=clickQ4()>
+            <div class="question-title-row">
+                <div><span class="question-num">4</span> <span class="question-text">어떤 음식이랑 드실 거에요?</span></div>
+                <div class="d-none question-response food-match" id="foodMatch"></div>
+            </div>
+            <div class="food-matcher d-none">
+                <div class="food-match-row row1">
+                    <div class="food-match-food col1">
+                        <div class="food-match-image no-food"></div>
+                        <div class="food-match-text">그냥 사둘게요</div>
+                    </div>
+                    <div class="food-match-food col2">
+                        <div class="food-match-image steak"></div>
+                        <div class="food-match-text">고기/스테이크</div>
+                    </div>
+                    <div class="food-match-food col3">
+                        <div class="food-match-image pasta"></div>
+                        <div class="food-match-text">파스타</div>
+                    </div>
+                </div>
+                <div class="food-match-row row2">
+                    <div class="food-match-food col1">
+                        <div class="food-match-image salad"></div>
+                        <div class="food-match-text">샐러드</div>
+                    </div>
+                    <div class="food-match-food col2">
+                        <div class="food-match-image western"></div>
+                        <div class="food-match-text">양식/한식요리</div>
+                    </div>
+                    <div class="food-match-food col3">
+                        <div class="food-match-image fish"></div>
+                        <div class="food-match-text">생선/해산물</div>
+                    </div>
+                </div>
+                <div class="food-match-row row3">
+                    <div class="food-match-row row1">
+                        <div class="food-match-food col1">
+                            <div class="food-match-image dessert"></div>
+                            <div class="food-match-text">핑거푸드/디저트</div>
+                        </div>
+                        <div class="food-match-food col2">
+                            <div class="food-match-image d-none"></div>
+                            <div class="food-match-text d-none"></div>
+                        </div>
+                        <div class="food-match-food col3">
+                            <div class="food-match-image d-none"></div>
+                            <div class="food-match-text d-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ok-btn">
+            추천 와인 보러가기!
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" src={{ .key | printf "//dapi.kakao.com/v2/maps/sdk.js?appkey=%v" }}></script>
+<script src="/static/js/kakaoMap.js"></script>
+<script src="/static/js/question.js"></script>
+{{end}}

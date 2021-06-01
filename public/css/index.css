@@ -1,0 +1,388 @@
+* { font-family: 'Spoqa Han Sans Neo', 'sans-serif'; }
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100vw;
+    height:100vh;
+    overflow-x:hidden;
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+    position:relative;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+.question-container {
+    height: 100%;
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -50px;
+}
+
+.question {
+    width: 310px;
+    height: 60px;
+    position: relative;
+    border: 1px solid #EDEDED;
+    border-radius: 7px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: start;
+    cursor: pointer;
+    flex-direction: column;
+    box-shadow: 2px 2px 8px #9a9595;
+    justify-content: center;
+    background-color: white;
+    padding: 16px;
+}
+
+.question-text {
+    font-size: 18px;
+    height: 30px;
+}
+
+.question-num {
+    font-size: 18px;
+    height: 30px;
+    font-weight: 600;
+    margin-right:12px;
+    color: black;
+    padding-left: 12px;
+}
+
+.top-bar {
+    width:100%;
+    height:67px;
+    background-color:#9179F2;
+    display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color:white;
+    
+}
+
+.top-bar-left-btn{
+    width:30px;
+    height:30px;
+    margin-right: cover;
+    color:white;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(../icons/home.svg);
+    margin-left:16px;
+    filter: invert(100%) sepia(0%) saturate(7476%) hue-rotate(110deg) brightness(98%) contrast(108%);
+}
+
+.top-bar-right-btn{
+    margin-right:16px;
+    display:flex;
+    flex-direction: column;
+}
+
+.feedback-btn {
+    width:24px;
+    height:24px;
+    margin-right: cover;
+    color:white;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(../icons/review.svg);
+    filter: invert(100%) sepia(0%) saturate(7476%) hue-rotate(110deg) brightness(98%) contrast(108%);
+}
+
+.feedback-text {
+    color:white;
+    font-size:6px;
+    padding-left: 3px;
+}
+
+.container{
+    width: 374px;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    overflow-y:scroll;
+    padding: 0;
+}
+
+.middle-top-divider{
+    border-bottom: 1px solid white;
+    /* padding-left: 16px; */
+    /* padding-right: 16px; */
+    width: 342px;
+    margin-left: auto;
+    margin-right: auto;
+}
+    
+.middle-bar-text{
+    color: white;
+    font-weight: 200;
+    padding-left: 32px;
+    padding-top: 20px;
+    font-size: 18px; 
+}
+    
+.middle-bar{
+    background-color: #8F7EEE;
+    height: 130px;
+}
+
+.question-1.active {
+    height: 300px;
+}
+
+.store-selector {
+    width: 140px;
+    border: 1px solid #EDEDED;
+    border-radius: 7px;
+    color: black;
+}
+
+#map {
+    width:100%;
+    height:200px;
+    margin-top: 10px;
+    border-radius: 7px;
+}
+
+.question-title-row {
+    font-size: 12px;
+    height: 30px;
+    display:flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    padding-bottom: 0;
+}
+
+.question-response {
+    color: purple;
+    width: 100%;
+    font-weight: 700;
+    padding-left: 40px;
+    margin-top: 1px;
+    font-size: 12px;   
+    justify-content: start;
+}
+
+.question-2.active {
+    height: 220px;
+    justify-content: flex-start;
+}
+
+.question-3.active {
+    height: 120px;
+}
+
+.question-4.active {
+    height: 340px;
+}
+
+.wine-selector-row {
+    justify-content: space-evenly;
+    align-items: center;
+    height:200px;
+    width:100%;
+    display:flex;
+}
+
+.wine-selector {
+    width: 150px;
+    height: 85%;
+    visibility:visible;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    display: flex;
+}
+
+.wine-image {
+    width: 81px;
+    height: 100px;
+}
+
+.wine-image.red{
+background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(../icons/wine_b.svg);
+}
+
+.wine-image.white{
+background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(../icons/wine_b.svg);
+}
+
+.wine-desc {
+    width: 108px;
+    height: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 9px;
+    border-radius: 40px;
+    font-size: 12px;
+}
+
+.price-selector-row {
+    justify-content:space-evenly;
+    display:flex;
+    width: 100%;
+}
+
+.price-selector {
+    overflow-y: hidden;
+    width: 256px;
+    height: 50px;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 16px;
+}
+
+.price-rect{
+    width:30px;
+    height:50px;
+}
+
+.price-line{
+    width: 40px;    
+    border-bottom: 1px solid black;
+    height: 0.5px;
+    margin-top: 6px;
+    /* margin-left:-5px; */
+}
+
+.price-rect-rectangle{
+    width: 30px;
+    border: 1px solid black;
+    height: 12px;
+    border-radius: 30px;
+}
+
+.price-rect.active .price-rect-rectangle{
+background-color:#6D0E8C;
+}
+
+.price-rect-text{
+    font-size: 8px;
+    font-weight: 600;
+    margin-top: 8px;
+    display:flex;
+    justify-content:center;
+}
+
+.food-matcher {
+    width: 278px;
+    height: 375px;
+    margin-top:16px;
+}
+
+.food-match-row {
+    width: 100%;
+    height: 90px;
+    display:flex;
+    justify-content:space-around;
+}
+
+.food-match-row.row1, .food-match-row.row2 {
+    padding-bottom: 9px;
+}
+
+.food-match-food {
+    width: 75px;
+    height: 90px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.food-match-image {
+    width: 60px;
+    height: 60px;
+}
+
+.food-match-image.no-food {
+    background-repeat: no-repeat;
+    background-size: 60px 60px;
+    background-image: url(../icons/wine.png);
+}
+
+.food-match-image.steak {
+    background-repeat: no-repeat;
+    background-size: 60px 60px;
+    background-image: url(../icons/steak.png);
+}
+
+.food-match-image.pasta {
+    background-repeat: no-repeat;
+    background-size: 60px 60px;
+    background-image: url(../icons/pasta.png);
+}
+
+.food-match-image.western {
+    background-repeat: no-repeat;
+    background-size: 60px 60px;
+    background-image: url(../icons/western.png);
+}
+
+.food-match-image.salad {
+    background-repeat: no-repeat;
+    background-size: 60px 60px;
+    background-image: url(../icons/salad.png);
+}
+
+.food-match-image.fish {
+    background-repeat: no-repeat;
+    background-size: 60px 60px;
+    background-image: url(../icons/fish.png);
+}
+.food-match-image.dessert {
+    background-repeat: no-repeat;
+    background-size: 60px 60px;
+    background-image: url(../icons/dessert.png);
+}
+
+
+.food-match-text {
+    font-size: 11px;
+    /* border-radius: 30px; */
+    width: 90px;
+    height:12px;
+    margin-top:9px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ok-btn {
+    display: none;
+    margin-top: 4px;
+    font-size: 16px;
+    font-weight: 300;
+    color: purple;
+    margin-top: 10px;
+    cursor: pointer;
+    width: 310px;
+    height: 49px;
+    background-color: #9179F2;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 300;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.ok-btn.show{
+display:flex;
+}
