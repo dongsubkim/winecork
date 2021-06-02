@@ -1,9 +1,23 @@
 function clickQ1() {
     console.log("Question 1 clicked!")
-    const question = document.getElementById("q1-container")
-    question.classList.toggle("active")
-    let map = document.getElementById('map');
-    map.classList.toggle("d-none")
+    const question = document.getElementById("q1-container");
+    const pickUpLocation = document.querySelector("#pickUpLocation");
+    const map = document.getElementById('map');
+    console.log("marker clicked: ", markerClicked)
+    if (markerClicked == true) {
+        question.classList.remove("active")
+    } else {
+        question.classList.add("active")
+        map.classList.remove("d-none")
+    }
+    markerClicked = false;
+    // if (pickUpLocation.innerText.length > 0) {
+    //     console.log("InnerText not empty")
+    //     if (!question.classList.contains("active")) {
+    //         question.classList.add("active")
+    //     }
+    // }
+    // map.classList.toggle("d-none")
 }
 
 function clickQ2() {
@@ -70,4 +84,56 @@ Array.prototype.forEach.call(foods, function (el) {
         let btn = document.querySelector(".ok-btn")
         btn.classList.add("show")
     })
+})
+
+const storeSelector = document.querySelector(".store-selector");
+const selectorBox = document.querySelector(".selector-box");
+const selectOptions = document.querySelectorAll(".selector-row");
+const selectBoxLine = document.querySelector(".selector-line");
+const selectTitle = document.querySelector(".selector-row.title");
+const selectedStore = document.querySelector(".selected-store");
+
+storeSelector.addEventListener("click", function () {
+    if (selectorBox.classList.contains("active")) {
+        storeSelector.style = "z-index:1;"
+        selectorBox.style = "z-index:1;"
+        selectorBox.classList.toggle("active")
+        selectOptions.forEach(element => {
+            element.style = "display:none;"
+        })
+        selectBoxLine.style = "display:none;"
+        selectedStore.style = "display:flex;"
+
+    } else {
+        storeSelector.style = "z-index:3;"
+        selectorBox.style = "z-index:3;"
+        selectorBox.classList.toggle("active")
+        selectOptions.forEach(element => {
+            element.style = "display:flex;"
+        });
+        selectBoxLine.style = "display:flex;"
+        selectedStore.style = "display:none;"
+
+    }
+})
+
+
+selectOptions.forEach(el => {
+    el.addEventListener("click", function() {
+        selectedStore.innerText = this.innerText
+    })
+})
+
+const submitButton = document.querySelector(".ok-btn");
+submitButton.addEventListener("click", function () {
+    var url = "/";
+    let store = document.querySelector("#pickUpLocation").innerText;
+    let wine = document.querySelector("#wineType").innerText;
+    let price = document.querySelector("#priceRange").innerText;
+    let food = document.querySelector("#foodMatch").innerText;
+    var params = `store=${store}&wine=${wine}&price=${price}&food=${food}`;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send(params);
 })

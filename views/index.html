@@ -1,18 +1,4 @@
 {{ define "content" }}
-<div class="container">
-    <div class="top-bar">
-        <div class="top-bar-left-btn"></div>
-        <div class="middle-title">와인콕</div>
-        <div class="top-bar-right-btn">
-            <div class="feedback-btn"></div>
-            <div class="feedback-text">피드백</div>
-        </div>
-
-    </div>
-    <div class="middle-bar">
-        <div class="middle-top-divider"></div>
-        <div class="middle-bar-text">네 개의 질문만 답해주세요.<br>와인콕이 딱 맞는 와인 찾아드릴게요</div>
-    </div>
     <div class="question-container">
         <div class="question question-1 active" onclick=clickQ1() id="q1-container">
             <div class="question-title-row">
@@ -20,13 +6,18 @@
                 <div class="d-none question-response pickup-location" id="pickUpLocation"></div>
             </div>
             <div class="store-selector">
-                <select class="form-select" aria-label="select store type">
-                    <option selected>마트/백화점</option>
-                    <option value="lottemart">롯데마트</option>
-                    <option value="lottedepartment">롯데 백화점</option>
-                    <option value="emart">이마트</option>
-                    <option value="ssg">신세계백화점</option>
-                </select>
+                <div class="selector-box">
+                    <div class="selector-row title">
+                        마트/ 백화점
+                        <i class="bi bi-chevron-down"></i>
+                    </div>
+                    <div class="selector-line"></div>
+                    <div class="selector-row">롯데마트</div>
+                    <div class="selector-row">롯데 백화점</div>
+                    <div class="selector-row">이마트</div>
+                    <div class="selector-row">신세계백화점</div>
+                    <div class="selector-row selected-store"></div>
+                </div>
             </div>
             <div id="map"></div>
         </div>
@@ -137,7 +128,9 @@
         </div>
     </div>
 
-</div>
+<script>
+    let markerClicked = false;
+</script>
 <script type="text/javascript" src={{ .key | printf "//dapi.kakao.com/v2/maps/sdk.js?appkey=%v" }}></script>
 <script src="/static/js/kakaoMap.js"></script>
 <script src="/static/js/question.js"></script>
