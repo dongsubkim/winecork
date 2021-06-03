@@ -2,6 +2,11 @@ const show = document.querySelector("#pickUpLocation");
 const question = document.querySelector(".question-1");
 const store = document.querySelector(".store-selector");
 
+const answerStore = document.querySelector("#answerStore");
+const answerWineType = document.querySelector("#answerWineType");
+const answerPriceRange = document.querySelector("#answerPriceRange");
+const answerFoodMatch = document.querySelector("#answerFoodMatch");
+
 var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 var options = { //지도를 생성할 때 필요한 기본 옵션
     center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
@@ -50,40 +55,18 @@ marker2.setMap(map);
 marker3.setMap(map);
 marker4.setMap(map);
 
+function clickMarker() {
+    show.innerText = this.getTitle();
+    answerStore.value = this.getTitle();
+    show.classList.remove("d-none")
+    container.classList.add("d-none")
+    store.classList.add("d-none")
+    question.classList.remove("active")
+    markerClicked = true
+}
+
 // 마커에 클릭이벤트를 등록합니다
-kakao.maps.event.addListener(marker1, 'click', function () {
-    // 마커 위에 인포윈도우를 표시합니다
-    show.innerText = this.getTitle();
-    show.classList.remove("d-none")
-    container.classList.add("d-none")
-    store.classList.add("d-none")
-    question.classList.remove("active")
-    markerClicked = true
-});
-kakao.maps.event.addListener(marker2, 'click', function () {
-    // 마커 위에 인포윈도우를 표시합니다
-    show.innerText = this.getTitle();
-    show.classList.remove("d-none")
-    container.classList.add("d-none")
-    store.classList.add("d-none")
-    question.classList.remove("active")
-    markerClicked = true
-});
-kakao.maps.event.addListener(marker3, 'click', function () {
-    // 마커 위에 인포윈도우를 표시합니다
-    show.innerText = this.getTitle();
-    show.classList.remove("d-none")
-    container.classList.add("d-none")
-    store.classList.add("d-none")
-    question.classList.remove("active")
-    markerClicked = true
-});
-kakao.maps.event.addListener(marker4, 'click', function () {
-    // 마커 위에 인포윈도우를 표시합니다
-    show.innerText = this.getTitle();
-    show.classList.remove("d-none")
-    container.classList.add("d-none")
-    store.classList.add("d-none")
-    question.classList.remove("active")
-    markerClicked = true
-});
+kakao.maps.event.addListener(marker1, 'click', clickMarker);
+kakao.maps.event.addListener(marker2, 'click', clickMarker);
+kakao.maps.event.addListener(marker3, 'click', clickMarker);
+kakao.maps.event.addListener(marker4, 'click', clickMarker);

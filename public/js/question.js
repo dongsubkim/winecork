@@ -1,7 +1,18 @@
+const storeSelector = document.querySelector(".store-selector");
+const selectorBox = document.querySelector(".selector-box");
+const selectOptions = document.querySelectorAll(".selector-row");
+const selectBoxLine = document.querySelector(".selector-line");
+const selectTitle = document.querySelector(".selector-row.title");
+const selectedStore = document.querySelector(".selected-store");
+
+const submitForm = document.querySelector(".submit-form");
+const submitButton = document.querySelector(".ok-btn");
+const questionContainer = document.querySelector("#question-container");
+questionContainer.addEventListener("click", allSelected)
+
 function clickQ1() {
     console.log("Question 1 clicked!")
     const question = document.getElementById("q1-container");
-    const pickUpLocation = document.querySelector("#pickUpLocation");
     const map = document.getElementById('map');
     console.log("marker clicked: ", markerClicked)
     if (markerClicked == true) {
@@ -11,13 +22,6 @@ function clickQ1() {
         map.classList.remove("d-none")
     }
     markerClicked = false;
-    // if (pickUpLocation.innerText.length > 0) {
-    //     console.log("InnerText not empty")
-    //     if (!question.classList.contains("active")) {
-    //         question.classList.add("active")
-    //     }
-    // }
-    // map.classList.toggle("d-none")
 }
 
 function clickQ2() {
@@ -51,8 +55,9 @@ Array.prototype.forEach.call(wineType, function (el) {
 
 function wineTypeSelector(e) {
     let wt = document.querySelector("#wineType");
-    wt.innerText = this.innerText
-    wt.classList.remove("d-none")
+    wt.innerText = this.innerText;
+    wt.classList.remove("d-none");
+    answerWineType.value = this.innerText;
 }
 
 let priceSelector = document.getElementsByClassName("price-rect");
@@ -63,6 +68,7 @@ Array.prototype.forEach.call(priceSelector, function (el) {
         offPriceRange();
         this.classList.toggle("active");
         priceRange.innerText = this.innerText;
+        answerPriceRange.value = this.innerText;
         priceRange.classList.remove("d-none");
     })
 })
@@ -80,18 +86,11 @@ Array.prototype.forEach.call(foods, function (el) {
     el.addEventListener("click", function () {
         let foodMatched = document.querySelector("#foodMatch");
         foodMatched.classList.remove("d-none")
-        foodMatched.innerText = this.innerText
-        let btn = document.querySelector(".ok-btn")
-        btn.classList.add("show")
+        foodMatched.innerText = this.innerText;
+        answerFoodMatch.value = this.innerText;
     })
 })
 
-const storeSelector = document.querySelector(".store-selector");
-const selectorBox = document.querySelector(".selector-box");
-const selectOptions = document.querySelectorAll(".selector-row");
-const selectBoxLine = document.querySelector(".selector-line");
-const selectTitle = document.querySelector(".selector-row.title");
-const selectedStore = document.querySelector(".selected-store");
 
 storeSelector.addEventListener("click", function () {
     if (selectorBox.classList.contains("active")) {
@@ -119,21 +118,26 @@ storeSelector.addEventListener("click", function () {
 
 
 selectOptions.forEach(el => {
-    el.addEventListener("click", function() {
+    el.addEventListener("click", function () {
         selectedStore.innerText = this.innerText
     })
 })
 
-const submitButton = document.querySelector(".ok-btn");
-submitButton.addEventListener("click", function () {
-    var url = "/";
-    let store = document.querySelector("#pickUpLocation").innerText;
-    let wine = document.querySelector("#wineType").innerText;
-    let price = document.querySelector("#priceRange").innerText;
-    let food = document.querySelector("#foodMatch").innerText;
-    var params = `store=${store}&wine=${wine}&price=${price}&food=${food}`;
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.send(params);
-})
+function allSelected() {
+    if (answerStore && answerStore.value.length == 0) {
+        return false
+    }
+    if (answerPriceRange && answerPriceRange.value.length == 0) {
+        return false
+    }
+    if (answerWineType && answerWineType.value.length == 0) {
+        return false
+    }
+    if (answerFoodMatch && answerFoodMatch.value.length == 0) {
+        return false
+    }
+    submitForm.classList.remove("d-none")
+    submitButton.classList.add("show")
+    return true
+}
+

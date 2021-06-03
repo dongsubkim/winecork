@@ -1,132 +1,159 @@
+{{ define "head" }}
+<link rel="stylesheet" href="/static/css/index.css">
+{{ end }}
+
 {{ define "content" }}
-    <div class="question-container">
-        <div class="question question-1 active" onclick=clickQ1() id="q1-container">
-            <div class="question-title-row">
-                <div><span class="question-num">1</span> <span class="question-text">어디서 사실거에요?</span></div>
-                <div class="d-none question-response pickup-location" id="pickUpLocation"></div>
-            </div>
-            <div class="store-selector">
-                <div class="selector-box">
-                    <div class="selector-row title">
-                        마트/ 백화점
-                        <i class="bi bi-chevron-down"></i>
-                    </div>
-                    <div class="selector-line"></div>
-                    <div class="selector-row">롯데마트</div>
-                    <div class="selector-row">롯데 백화점</div>
-                    <div class="selector-row">이마트</div>
-                    <div class="selector-row">신세계백화점</div>
-                    <div class="selector-row selected-store"></div>
-                </div>
-            </div>
-            <div id="map"></div>
+<div class="middle-bar">
+    <div class="middle-top-divider"></div>
+    <div class="middle-bar-text">네 개의 질문만 답해주세요.<br>와인콕이 딱 맞는 와인 찾아드릴게요</div>
+</div>
+
+<div class="outer-container" id="question-container">
+    <div class="question question-1 active" onclick=clickQ1() id="q1-container">
+        <div class="question-title-row">
+            <div><span class="question-num">1</span> <span class="question-text">어디서 사실거에요?</span></div>
+            <div class="d-none question-response pickup-location" id="pickUpLocation"></div>
         </div>
-        <div class="question question-2" onclick=clickQ2()>
-            <div class="question-title-row">
-                <div><span class="question-num">2</span> <span class="question-text">레드 or 화이트 와인</span></div>
-                <div class="d-none question-response wine-type" id="wineType"></div>
-            </div>
-            <div class="wine-selector-row d-none">
-                <div class="wine-selector red">
-                    <div class="wine-image red"></div>
-                    <div class="wine-desc red">레드 와인</div>
+        <div class="store-selector">
+            <div class="selector-box">
+                <div class="selector-row title">
+                    마트/ 백화점
+                    <i class="bi bi-chevron-down"></i>
                 </div>
-                <div class="wine-selector white">
-                    <div class="wine-image white"></div>
-                    <div class="wine-desc white">화이트/로제 와인</div>
-                </div>
+                <div class="selector-line"></div>
+                <div class="selector-row">롯데마트</div>
+                <div class="selector-row">롯데 백화점</div>
+                <div class="selector-row">이마트</div>
+                <div class="selector-row">신세계백화점</div>
+                <div class="selector-row selected-store"></div>
             </div>
         </div>
-        <div class="question question-3" onclick=clickQ3()>
-            <div class="question-title-row">
-                <div><span class="question-num">3</span> <span class="question-text">가격대</span></div>
-                <div class="d-none question-response price-range" id="priceRange"></div>
-            </div>
-            <div class="d-none price-selector">
-                <div class="price-selector-row">
-                    <div class="price-rect rect1">
-                        <div class="price-rect-rectangle"></div>
-                        <div class="price-rect-text">￦1만↓</div>
-                    </div>
-                    <div class="price-line line1"></div>
-                    <div class="price-rect rect2">
-                        <div class="price-rect-rectangle"></div>
-                        <div class="price-rect-text">￦1만</div>
-                    </div>
-                    <div class="price-line line2"></div>
-                    <div class="price-rect rect3">
-                        <div class="price-rect-rectangle"></div>
-                        <div class="price-rect-text">₩2만</div>
-                    </div>
-                    <div class="price-line line3"></div>
-                    <div class="price-rect rect4">
-                        <div class="price-rect-rectangle"></div>
-                        <div class="price-rect-text">￦3~4만</div>
-                    </div>
-                    <div class="price-line line4"></div>
-                    <div class="price-rect rect5">
-                        <div class="price-rect-rectangle"></div>
-                        <div class="price-rect-text">₩4만↑</div>
-                    </div>
-                </div>
-            </div>
+        <div id="map"></div>
+    </div>
+    <div class="question question-2" onclick=clickQ2()>
+        <div class="question-title-row">
+            <div><span class="question-num">2</span> <span class="question-text">레드 or 화이트 와인</span></div>
+            <div class="d-none question-response wine-type" id="wineType"></div>
         </div>
-        <div class="question question-4" onclick=clickQ4()>
-            <div class="question-title-row">
-                <div><span class="question-num">4</span> <span class="question-text">어떤 음식이랑 드실 거에요?</span></div>
-                <div class="d-none question-response food-match" id="foodMatch"></div>
+        <div class="wine-selector-row d-none">
+            <div class="wine-selector red">
+                <div class="wine-image red"></div>
+                <div class="wine-desc red">레드 와인</div>
             </div>
-            <div class="food-matcher d-none">
-                <div class="food-match-row row1">
-                    <div class="food-match-food col1">
-                        <div class="food-match-image no-food"></div>
-                        <div class="food-match-text">그냥 사둘게요</div>
-                    </div>
-                    <div class="food-match-food col2">
-                        <div class="food-match-image steak"></div>
-                        <div class="food-match-text">고기/스테이크</div>
-                    </div>
-                    <div class="food-match-food col3">
-                        <div class="food-match-image pasta"></div>
-                        <div class="food-match-text">파스타</div>
-                    </div>
-                </div>
-                <div class="food-match-row row2">
-                    <div class="food-match-food col1">
-                        <div class="food-match-image salad"></div>
-                        <div class="food-match-text">샐러드</div>
-                    </div>
-                    <div class="food-match-food col2">
-                        <div class="food-match-image western"></div>
-                        <div class="food-match-text">양식/한식요리</div>
-                    </div>
-                    <div class="food-match-food col3">
-                        <div class="food-match-image fish"></div>
-                        <div class="food-match-text">생선/해산물</div>
-                    </div>
-                </div>
-                <div class="food-match-row row3">
-                    <div class="food-match-row row1">
-                        <div class="food-match-food col1">
-                            <div class="food-match-image dessert"></div>
-                            <div class="food-match-text">핑거푸드/디저트</div>
-                        </div>
-                        <div class="food-match-food col2">
-                            <div class="food-match-image d-none"></div>
-                            <div class="food-match-text d-none"></div>
-                        </div>
-                        <div class="food-match-food col3">
-                            <div class="food-match-image d-none"></div>
-                            <div class="food-match-text d-none"></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="wine-selector white">
+                <div class="wine-image white"></div>
+                <div class="wine-desc white">화이트/로제 와인</div>
             </div>
-        </div>
-        <div class="ok-btn">
-            추천 와인 보러가기!
         </div>
     </div>
+    <div class="question question-3" onclick=clickQ3()>
+        <div class="question-title-row">
+            <div><span class="question-num">3</span> <span class="question-text">가격대</span></div>
+            <div class="d-none question-response price-range" id="priceRange"></div>
+        </div>
+        <div class="d-none price-selector">
+            <div class="price-selector-row">
+                <div class="price-rect rect1">
+                    <div class="price-rect-rectangle"></div>
+                    <div class="price-rect-text">￦1만↓</div>
+                </div>
+                <div class="price-line line1"></div>
+                <div class="price-rect rect2">
+                    <div class="price-rect-rectangle"></div>
+                    <div class="price-rect-text">￦1만</div>
+                </div>
+                <div class="price-line line2"></div>
+                <div class="price-rect rect3">
+                    <div class="price-rect-rectangle"></div>
+                    <div class="price-rect-text">₩2만</div>
+                </div>
+                <div class="price-line line3"></div>
+                <div class="price-rect rect4">
+                    <div class="price-rect-rectangle"></div>
+                    <div class="price-rect-text">￦3~4만</div>
+                </div>
+                <div class="price-line line4"></div>
+                <div class="price-rect rect5">
+                    <div class="price-rect-rectangle"></div>
+                    <div class="price-rect-text">₩4만↑</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="question question-4" onclick=clickQ4()>
+        <div class="question-title-row">
+            <div><span class="question-num">4</span> <span class="question-text">어떤 음식이랑 드실 거에요?</span></div>
+            <div class="d-none question-response food-match" id="foodMatch"></div>
+        </div>
+        <div class="food-matcher d-none">
+            <div class="food-match-row row1">
+                <div class="food-match-food col1">
+                    <div class="food-match-image no-food"></div>
+                    <div class="food-match-text">그냥 사둘게요</div>
+                </div>
+                <div class="food-match-food col2">
+                    <div class="food-match-image steak"></div>
+                    <div class="food-match-text">고기/스테이크</div>
+                </div>
+                <div class="food-match-food col3">
+                    <div class="food-match-image pasta"></div>
+                    <div class="food-match-text">파스타</div>
+                </div>
+            </div>
+            <div class="food-match-row row2">
+                <div class="food-match-food col1">
+                    <div class="food-match-image salad"></div>
+                    <div class="food-match-text">샐러드</div>
+                </div>
+                <div class="food-match-food col2">
+                    <div class="food-match-image western"></div>
+                    <div class="food-match-text">양식/한식요리</div>
+                </div>
+                <div class="food-match-food col3">
+                    <div class="food-match-image fish"></div>
+                    <div class="food-match-text">생선/해산물</div>
+                </div>
+            </div>
+            <div class="food-match-row row3">
+                <div class="food-match-row row1">
+                    <div class="food-match-food col1">
+                        <div class="food-match-image dessert"></div>
+                        <div class="food-match-text">핑거푸드/디저트</div>
+                    </div>
+                    <div class="food-match-food col2">
+                        <div class="food-match-image d-none"></div>
+                        <div class="food-match-text d-none"></div>
+                    </div>
+                    <div class="food-match-food col3">
+                        <div class="food-match-image d-none"></div>
+                        <div class="food-match-text d-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form class="submit-form d-none" method="POST" action="/" enctype="application/x-www-form-urlencoded">
+        <button type="submit" class="ok-btn">
+            추천 와인 보러가기!
+        </button>
+        <div class="d-none">
+            <label for="answerStore" class="form-label"></label>
+            <input type="text" class="form-control" name="store" id="answerStore">
+        </div>
+        <div class="d-none">
+            <label for="answerWineType" class="form-label"></label>
+            <input type="text" class="form-control" name="wine_type" id="answerWineType">
+        </div>
+        <div class="d-none">
+            <label for="answerPriceRange" class="form-label"></label>
+            <input type="text" class="form-control" name="price_range" id="answerPriceRange">
+        </div>
+        <div class="d-none">
+            <label for="answerFoodMatch" class="form-label"></label>
+            <input type="text" class="form-control" name="food_match" id="answerFoodMatch">
+        </div>
+    </form>
+</div>
 
 <script>
     let markerClicked = false;

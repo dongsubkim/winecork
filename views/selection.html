@@ -1,0 +1,28 @@
+{{ define "head" }}
+<link rel="stylesheet" href="/static/css/selection.css">
+{{ end }}
+
+{{ define "content" }}
+<div class="middle-bar">
+    <div class="middle-top-divider"></div>
+</div>
+
+<div class="selection-content">
+    <div class="row selection-container">
+        <img src={{ .wine.Image }} class="selection-image">
+        <div class="info-box">
+            <div class="selection-name">{{ .wine.WineName }}</div>
+            <div class="selection-price">{{ .price }}</div>
+            <div class="info-detail">
+                <div class="selection-detail">{{ .wine.Country }}</div>
+                <div class="divider">|</div>
+                <div class="selection-detail">{{ .wine.Grape }}</div>
+                <div class="divider">|</div>
+                <div class="selection-detail">{{ .wine.WineType }}</div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{{ end }}

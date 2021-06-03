@@ -7,12 +7,13 @@ import (
 
 	"github.com/foolin/goview"
 	"github.com/go-chi/chi/v5"
+	"github.com/project_winecork/data"
 )
 
 func WineRouter(r chi.Router) {
 	r.Get("/", renderIndex)
 	r.Post("/", queryWine)
-	r.Get("/suggestion", renderSuggestion)
+	r.Get("/detail", renderDetail)
 }
 
 func renderIndex(w http.ResponseWriter, r *http.Request) {
@@ -29,18 +30,44 @@ func queryWine(w http.ResponseWriter, r *http.Request) {
 	log.Println("Querying Wine...")
 	r.ParseForm()
 	log.Println(r.PostForm)
-	http.Redirect(w, r, "/suggestion", http.StatusFound)
-}
-
-func renderSuggestion(w http.ResponseWriter, r *http.Request) {
-	err := goview.Render(w, http.StatusOK, "wine", goview.M{
-		"wine": r.PostFormValue("wine"),
-		"store": r.PostFormValue("store"),
-		"price": r.PostFormValue("price"),
-		"food": r.PostFormValue("food"),
+	wines := []data.Wine{
+		data.Wine{
+			Id:       1,
+			WineName: "풋 프린트 쉬라즈 750mL",
+			Price:    22000,
+			Image:    "static/icons/EM0001.jpg",
+		},
+		data.Wine{
+			Id:       2,
+			WineName: "풋 프린트 쉬라즈 750mL",
+			Price:    22000,
+			Image:    "static/icons/EM0006.jpg",
+		},
+	}
+	err := goview.Render(w, http.StatusOK, "recommendation", goview.M{
+		"wines": wines,
 	})
 	if err != nil {
 		log.Println(err)
+	}
+}
+
+func renderDetail(w http.ResponseWriter, r *http.Request) {
+	log.Println("Rendering details...")
+	log.Println("Wine Id: ", r.FormValue("id"))
+	wine, err := data.WineById(r.FormValue("id"))
+	if err != nil {
+		log.Println("Fail to get wine by id: ", err)
 		http.Redirect(w, r, "/", http.StatusInternalServerError)
+		return
+	}
+	err = goview.Render(w, http.StatusOK, "selection", goview.M{
+		"wine":  wine,
+		"price": wine.ConvertedPrice(),
+	})
+	if err != nil {
+		log.Println("Error during rendering detail: ", err)
+		http.Redirect(w, r, "/", http.StatusInternalServerError)
+		return
 	}
 }
