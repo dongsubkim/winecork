@@ -21,20 +21,23 @@ create table sessions (
 );
 
 create table wines (
-  id          serial primary key,
-  key         varchar(255) not null unique,
-  store       varchar(255),
-  wine_name   varchar(255),
-  locations   varchar(255)[],
-  price       int,
-  wine_sort   varchar(64),
-  wine_origin varchar(255),
-  graphs      varchar(255)[],
-  acidity     int,
-  sweetness   int,
-  sparkling   int
-  foodmatchs  varchar(255)[],
-  created_at  timestamp not null  
+  id           serial primary key,
+  priority     int,
+  key_id       varchar(255) not null unique,
+  store        varchar(255),
+  wine_name    varchar(255),
+  locations    varchar(255)[],
+  price        int,
+  price_type   int,
+  wine_type    varchar(64),
+  country      varchar(255),
+  grapes       varchar(255)[],
+  acidity      int,
+  sweetness    int,
+  sparkling    int,
+  food_matches varchar(255)[],
+  image_url    text,
+  created_at   timestamp not null  
 );
 
 create table feedbacks (

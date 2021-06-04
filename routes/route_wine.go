@@ -62,8 +62,7 @@ func renderDetail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	err = goview.Render(w, http.StatusOK, "selection", goview.M{
-		"wine":  wine,
-		"price": wine.ConvertedPrice(),
+		"wine": wine,
 	})
 	if err != nil {
 		log.Println("Error during rendering detail: ", err)
