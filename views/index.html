@@ -21,10 +21,10 @@
                     <i class="bi bi-chevron-down"></i>
                 </div>
                 <div class="selector-line"></div>
-                <div class="selector-row">롯데마트</div>
-                <div class="selector-row">롯데 백화점</div>
-                <div class="selector-row">이마트</div>
-                <div class="selector-row">신세계백화점</div>
+                <div class="selector-row" id="lotte-mart">롯데마트</div>
+                <div class="selector-row" id="lotte-dep">롯데 백화점</div>
+                <div class="selector-row" id="emart">이마트</div>
+                <div class="selector-row" id="ssg">신세계백화점</div>
                 <div class="selector-row selected-store"></div>
             </div>
         </div>
@@ -36,11 +36,11 @@
             <div class="d-none question-response wine-type" id="wineType"></div>
         </div>
         <div class="wine-selector-row d-none">
-            <div class="wine-selector red">
+            <div class="wine-selector red" id="red">
                 <div class="wine-image red"></div>
                 <div class="wine-desc red">레드 와인</div>
             </div>
-            <div class="wine-selector white">
+            <div class="wine-selector white" id="white">
                 <div class="wine-image white"></div>
                 <div class="wine-desc white">화이트/로제 와인</div>
             </div>
@@ -53,27 +53,27 @@
         </div>
         <div class="d-none price-selector">
             <div class="price-selector-row">
-                <div class="price-rect rect1">
+                <div class="price-rect rect1" id="price0">
                     <div class="price-rect-rectangle"></div>
                     <div class="price-rect-text">￦1만↓</div>
                 </div>
                 <div class="price-line line1"></div>
-                <div class="price-rect rect2">
+                <div class="price-rect rect2" id="price1">
                     <div class="price-rect-rectangle"></div>
                     <div class="price-rect-text">￦1만</div>
                 </div>
                 <div class="price-line line2"></div>
-                <div class="price-rect rect3">
+                <div class="price-rect rect3" id="price2">
                     <div class="price-rect-rectangle"></div>
                     <div class="price-rect-text">₩2만</div>
                 </div>
                 <div class="price-line line3"></div>
-                <div class="price-rect rect4">
+                <div class="price-rect rect4" id="price3">
                     <div class="price-rect-rectangle"></div>
                     <div class="price-rect-text">￦3~4만</div>
                 </div>
                 <div class="price-line line4"></div>
-                <div class="price-rect rect5">
+                <div class="price-rect rect5" id="price4">
                     <div class="price-rect-rectangle"></div>
                     <div class="price-rect-text">₩4만↑</div>
                 </div>
@@ -87,49 +87,93 @@
         </div>
         <div class="food-matcher d-none">
             <div class="food-match-row row1">
-                <div class="food-match-food col1">
+                <div class="food-match-food col1" id="no-food">
                     <div class="food-match-image no-food"></div>
                     <div class="food-match-text">그냥 사둘게요</div>
                 </div>
-                <div class="food-match-food col2">
+                <div class="food-match-food col2" id="steak">
                     <div class="food-match-image steak"></div>
                     <div class="food-match-text">고기/스테이크</div>
                 </div>
-                <div class="food-match-food col3">
+                <div class="food-match-food col3" id="pasta">
                     <div class="food-match-image pasta"></div>
                     <div class="food-match-text">파스타</div>
                 </div>
             </div>
+            <div class="food-match-detail row1">
+                <div class="food-match-detail-col steak red" id="steak-beef">
+                    소/양고기
+                </div>
+                <div class="food-match-detail-col steak red" id="steak-port">
+                    돼지/오리고기
+                </div>
+                <div class="food-match-detail-col pasta red white" id="pasta-meat">
+                    미트/오일/크림
+                </div>
+                <div class="food-match-detail-col pasta red white" id="pasta-light">
+                    담백
+                </div>
+            </div>
             <div class="food-match-row row2">
-                <div class="food-match-food col1">
+                <div class="food-match-food col1" id="salad">
                     <div class="food-match-image salad"></div>
                     <div class="food-match-text">샐러드</div>
                 </div>
-                <div class="food-match-food col2">
+                <div class="food-match-food col2" id="western">
                     <div class="food-match-image western"></div>
                     <div class="food-match-text">양식/한식요리</div>
                 </div>
-                <div class="food-match-food col3">
+                <div class="food-match-food col3" id="fish">
                     <div class="food-match-image fish"></div>
                     <div class="food-match-text">생선/해산물</div>
                 </div>
             </div>
-            <div class="food-match-row row3">
-                <div class="food-match-row row1">
-                    <div class="food-match-food col1">
-                        <div class="food-match-image dessert"></div>
-                        <div class="food-match-text">핑거푸드/디저트</div>
-                    </div>
-                    <div class="food-match-food col2">
-                        <div class="food-match-image d-none"></div>
-                        <div class="food-match-text d-none"></div>
-                    </div>
-                    <div class="food-match-food col3">
-                        <div class="food-match-image d-none"></div>
-                        <div class="food-match-text d-none"></div>
-                    </div>
+            <div class="food-match-detail row2">
+                <div class="food-match-detail-col western red white" id="western-oily">
+                    기름진 요리
+                </div>
+                <div class="food-match-detail-col western red white" id="western-spicy">
+                    매운양념요리
+                </div>
+                <div class="food-match-detail-col western red white" id="western-sweet">
+                    달짝지근한 요리
+                </div>
+                <div class="food-match-detail-col western red white" id="western-light">
+                    담백한 요리
+                </div>
+                <div class="food-match-detail-col fish white" id="fish-tuna">
+                    참치/연어
+                </div>
+                <div class="food-match-detail-col fish white" id="fish-sushi">
+                    스시
+                </div>
+                <div class="food-match-detail-col fish white" id="fish-oyster">
+                    굴
                 </div>
             </div>
+            <div class="food-match-row row3">
+                <div class="food-match-food col1" id="dessert">
+                    <div class="food-match-image dessert"></div>
+                    <div class="food-match-text">핑거푸드/디저트</div>
+                </div>
+                <div class="food-match-food col2">
+                    <div class="food-match-image d-none"></div>
+                    <div class="food-match-text d-none"></div>
+                </div>
+                <div class="food-match-food col3">
+                    <div class="food-match-image d-none"></div>
+                    <div class="food-match-text d-none"></div>
+                </div>
+            </div>
+            <div class="food-match-detail row3">
+                <div class="food-match-detail-col dessert red white" id="dessert-salty">
+                    짭쪼름한 하몽/치즈/크래커
+                </div>
+                <div class="food-match-detail-col dessert red white" id="dessert-sweet">
+                    달달한 디저트
+                </div>
+            </div>
+
         </div>
     </div>
     <form class="submit-form d-none" method="POST" action="/" enctype="application/x-www-form-urlencoded">

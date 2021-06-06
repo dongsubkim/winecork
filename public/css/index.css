@@ -132,7 +132,7 @@
 }
 
 .question-4.active {
-    height: 340px;
+    height: 400px;
 }
 
 .wine-selector-row {
@@ -234,6 +234,9 @@ background-color:#6D0E8C;
     width: 278px;
     height: 375px;
     margin-top:16px;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .food-match-row {
@@ -310,6 +313,30 @@ background-color:#6D0E8C;
     margin-top:9px;
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+.food-match-detail {
+    display:none;
+    width: 276px;
+    height: 30px;
+    justify-content: space-evenly;
+    border: 1px solid #EDEDED;
+    border-radius: 7px;
+    margin-bottom: 7px;
+}
+
+.food-match-detail.show {
+    display:flex;
+}
+
+.food-match-detail-col {
+    display:none;
+    font-size: 10px;
+}
+
+.food-match-detail-col.show {
+    display:flex;
     align-items: center;
 }
 

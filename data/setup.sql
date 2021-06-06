@@ -28,7 +28,7 @@ create table wines (
   wine_name    varchar(255),
   locations    varchar(255)[],
   price        int,
-  price_type   int,
+  price_type   varchar(64),
   wine_type    varchar(64),
   country      varchar(255),
   grapes       varchar(255)[],
@@ -36,7 +36,7 @@ create table wines (
   sweetness    int,
   sparkling    int,
   food_matches varchar(255)[],
-  image_url    text,
+  -- image_url    text,
   created_at   timestamp not null  
 );
 

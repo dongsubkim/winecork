@@ -3,7 +3,7 @@
 }
 
 .selection-content {
-    width: 374px;
+    width: 406px;
     height: 400px; 
     padding-left: 32px;
     padding-right: 32px;
@@ -11,7 +11,7 @@
 }
 
 .selection-container {
-    width: 310px;
+    width: 342px;
     height: 100%;
 }
 
@@ -21,7 +21,7 @@
 }
 
 .info-box {
-    width: 180px;
+    width: 212px;
     height: 100px;
     margin-top: 86px;
 }

@@ -24,27 +24,27 @@ var markerPosition4 = new kakao.maps.LatLng(33.453701, 126.570667);
 // 마커를 생성합니다
 var marker1 = new kakao.maps.Marker({
     position: markerPosition1,
-    title: "롯데마트 1",
+    title: "롯데마트",
     clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
 });
 // 마커를 생성합니다
 var marker2 = new kakao.maps.Marker({
     position: markerPosition2,
-    title: "롯데백화점 1",
+    title: "롯데백화점 본점",
     clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
 });
 
 // 마커를 생성합니다
 var marker3 = new kakao.maps.Marker({
     position: markerPosition3,
-    title: "이마트 1",
+    title: "이마트몰 가양점",
     clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
 });
 
 // 마커를 생성합니다
 var marker4 = new kakao.maps.Marker({
     position: markerPosition4,
-    title: "신세계백화점 1",
+    title: "신세계백화점 강남점",
     clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
 });
 

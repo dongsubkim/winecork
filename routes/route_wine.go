@@ -28,23 +28,12 @@ func renderIndex(w http.ResponseWriter, r *http.Request) {
 
 func queryWine(w http.ResponseWriter, r *http.Request) {
 	log.Println("Querying Wine...")
-	r.ParseForm()
-	log.Println(r.PostForm)
-	wines := []data.Wine{
-		data.Wine{
-			Id:       1,
-			WineName: "풋 프린트 쉬라즈 750mL",
-			Price:    22000,
-			Image:    "static/icons/EM0001.jpg",
-		},
-		data.Wine{
-			Id:       2,
-			WineName: "풋 프린트 쉬라즈 750mL",
-			Price:    22000,
-			Image:    "static/icons/EM0006.jpg",
-		},
+	wines, err := data.QueryWines(r.FormValue("store"), r.FormValue("wine_type"), r.FormValue("food_match"), r.FormValue("price_range"))
+	if err != nil {
+		log.Println("ERROR during queryWine:", err)
 	}
-	err := goview.Render(w, http.StatusOK, "recommendation", goview.M{
+	log.Println("wines: ", wines)
+	err = goview.Render(w, http.StatusOK, "recommendation", goview.M{
 		"wines": wines,
 	})
 	if err != nil {
@@ -62,7 +51,9 @@ func renderDetail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	err = goview.Render(w, http.StatusOK, "selection", goview.M{
-		"wine": wine,
+		"wine":           wine,
+		"convertedPrice": wine.ConvertedPrice(),
+		"grapes":         wine.StripGrapes(),
 	})
 	if err != nil {
 		log.Println("Error during rendering detail: ", err)

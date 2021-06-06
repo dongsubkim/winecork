@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"os"
-	"path"
 	"strconv"
 	"strings"
 	"time"
@@ -24,7 +22,7 @@ type Wine struct {
 	WineName    string `db:"wine_name"`
 	Locations   *pq.StringArray
 	Price       int
-	PriceType   int    `db:"price_type"`
+	PriceType   string `db:"price_type"`
 	WineType    string `db:"wine_type"`
 	Country     string
 	Grapes      *pq.StringArray
@@ -36,30 +34,30 @@ type Wine struct {
 	CreatedAt   time.Time       `db:"created_at"`
 }
 
-func init() {
-	csvFile, err := os.Open(path.Join("data", "wine_db.csv"))
-	if err != nil {
-		log.Fatal("Error opening wine_db.csv: ", err)
-	}
-	defer csvFile.Close()
-	wines := parseCSV(csvFile)
-	err = store(wines)
-	if err != nil {
-		log.Fatal("Error during storing csv")
-	}
-}
+// func init() {
+// 	csvFile, err := os.Open(path.Join("data", "wine_db.csv"))
+// 	if err != nil {
+// 		log.Fatal("Error opening wine_db.csv: ", err)
+// 	}
+// 	defer csvFile.Close()
+// 	wines := parseCSV(csvFile)
+// 	err = store(wines)
+// 	if err != nil {
+// 		log.Fatal("Error during storing csv")
+// 	}
+// }
 
-func mappingPrice(price int) int {
+func mappingPrice(price int) string {
 	if price < 10000 {
-		return 0
+		return "0"
 	} else if price < 20000 {
-		return 1
+		return "1"
 	} else if price < 30000 {
-		return 2
+		return "2"
 	} else if price < 40000 {
-		return 3
+		return "3"
 	} else {
-		return 4
+		return "4"
 	}
 }
 
@@ -89,12 +87,17 @@ func parseCSV(csvFile io.Reader) []Wine {
 		wine.Locations = pq.Array(locations).(*pq.StringArray)
 		wine.Price, _ = strconv.Atoi(line[5])
 		wine.PriceType = mappingPrice(wine.Price)
+		if line[6] == "레드" {
+			wine.WineType = "red"
+		} else {
+			wine.WineType = "white"
+		}
 		grapes := []string{line[8]}
 		if line[9] != "" && line[8] != "0" {
-			grapes = append(grapes, line[8])
+			grapes = append(grapes, line[9])
 		}
 		if line[10] != "" && line[9] != "0" {
-			grapes = append(grapes, line[9])
+			grapes = append(grapes, line[10])
 		}
 		wine.Grapes = pq.Array(grapes).(*pq.StringArray)
 		wine.Acidity, _ = strconv.Atoi(line[11])
@@ -112,7 +115,7 @@ func parseCSV(csvFile io.Reader) []Wine {
 }
 
 func store(wines []Wine) (err error) {
-	_, err = db.NamedExec(`INSERT INTO wines (priority, key_id, store, wine_name, locations, price, wine_type, country, grapes, acidity, sweetness, sparkling, food_matches, created_at)
+	_, err = db.NamedExec(`INSERT INTO wines (priority, key_id, store, wine_name, locations, price, price_type, wine_type, country, grapes, acidity, sweetness, sparkling, food_matches, created_at)
 		VALUES (:priority, :key_id, :store, :wine_name, :locations, :price, :price_type, :wine_type, :country, :grapes, :acidity, :sweetness, :sparkling, :food_matches, :created_at)`, wines[1:])
 	if err != nil {
 		log.Fatalln("ERROR during storing to Postgres DB:", err)
@@ -124,31 +127,44 @@ func (wine *Wine) ConvertedPrice() string {
 	return fmt.Sprintf("₩%s", humanize.Comma(int64(wine.Price)))
 }
 
-// func PostByUUID(uuid string) (post Post, err error) {
-// 	post = Post{}
-// 	err = db.QueryRow("SELECT id, uuid, title, category, content, created_at FROM posts WHERE uuid = $1", uuid).
-// 		Scan(&post.Id, &post.Uuid, &post.Title, pq.Array(&post.Category), &post.Content, &post.CreatedAt)
-// 	return
-// }
+func (wine *Wine) StripGrapes() string {
+	s := fmt.Sprint(wine.Grapes)
+	log.Println(s)
+	return s[2 : len(s)-1]
+}
+
 func WineById(id string) (wine Wine, err error) {
 	wine = Wine{}
-	err = db.Get(&wine, "SELECT * FROM person WHERE key_id=$1", id)
+	err = db.Get(&wine, "SELECT * FROM wines WHERE key_id=$1", id)
 	if err != nil {
 		log.Println("Error during WineById:", err)
 	}
 	return
 }
 
-func QueryWines(store, location, wineType, foodMatch string, price int) (wines []Wine, err error) {
+func QueryWines(store, wineType, foodMatch, price string) (wines []Wine, err error) {
 	var statement string
-	if store == "lottemart" {
+	fmt.Println(store, wineType, foodMatch, price)
+	if wineType == "red" {
+		foodMatch = foodMatchingRed[foodMatch]
+	} else {
+		foodMatch = foodMatchingWhite[foodMatch]
+	}
+	storeLocation := strings.Split(store, " ")
+	var location string
+	if len(storeLocation) > 1 {
+		store, location = storeLocation[0], storeLocation[1]
+	}
+	price = string(price[len(price)-1])
+	fmt.Println(store, location, wineType, foodMatch, price)
+	if store == "롯데마트" {
 		statement = "SELECT * FROM wines WHERE store = $1 AND price_type = $2 AND wine_type = $3 AND $4=any(food_matches) ORDER BY priority LIMIT 2"
-		err = db.Select(&wines, statement, store, mappingPrice(price), wineType, foodMatch)
+		err = db.Select(&wines, statement, store, price, wineType, foodMatch)
 	} else {
 		statement = "SELECT * FROM wines WHERE store = $1 AND price_type = $2 AND wine_type = $3 AND $4=any(food_matches) AND $5=any(locations) ORDER BY priority LIMIT 2"
-		err = db.Select(&wines, statement, store, mappingPrice(price), wineType, foodMatch, location)
+		err = db.Select(&wines, statement, store, price, wineType, foodMatch, location)
 	}
-	if err != nil {
+	if err != nil || len(wines) == 0 {
 		log.Println("Error during QueryWines, maybe no matching wines:", err)
 	}
 	return

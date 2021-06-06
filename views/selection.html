@@ -9,14 +9,14 @@
 
 <div class="selection-content">
     <div class="row selection-container">
-        <img src={{ .wine.Image }} class="selection-image">
+        <img class="selection-image" src={{ .wine.Image | printf "%q" }}>
         <div class="info-box">
             <div class="selection-name">{{ .wine.WineName }}</div>
-            <div class="selection-price">{{ .wine.ConvertedPrice }}</div>
+            <div class="selection-price">{{ .convertedPrice }}</div>
             <div class="info-detail">
                 <div class="selection-detail">{{ .wine.Country }}</div>
                 <div class="divider">|</div>
-                <div class="selection-detail">{{ .wine.Grape }}</div>
+                <div class="selection-detail">{{ .grapes }}</div>
                 <div class="divider">|</div>
                 <div class="selection-detail">{{ .wine.WineType }}</div>
             </div>

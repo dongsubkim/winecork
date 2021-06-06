@@ -11,8 +11,8 @@
 <div class="outer-container">
     <div class="recommendation-row">
         {{ range .wines }}
-        <a class="wine-card" href={{ .Id | printf "/detail?id=%v" }}>
-            <img src={{ .Image }} class="recommendation-image">
+        <a class="wine-card" href={{ .Key | printf "/detail?id=%v" }}>
+            <img src={{ .Image | printf "%q" }} class="recommendation-image">
             <div class="recommendation-name">{{ .WineName }}</div>
             <div class="recommendation-price">{{ .ConvertedPrice }}</div>
         </a>
