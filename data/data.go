@@ -1,10 +1,18 @@
 package data
 
 import (
-	"log"
+	"bufio"
+	"encoding/csv"
+	"io"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strconv"
+	"strings"
+	"time"
 
 	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
+	"github.com/lib/pq"
 )
 
 var db *sqlx.DB
@@ -43,14 +51,109 @@ var foodMatchingWhite = map[string]string{
 }
 
 func init() {
+	initLogger()
+	info("Initiating DB")
 	var err error
 	DB_URL := "dbname=winecork sslmode=disable"
-	// if v, ok := os.LookupEnv("DATABASE_URL"); ok {
-	// 	DB_URL = v
-	// }
+	if v, ok := os.LookupEnv("DATABASE_URL"); ok {
+		DB_URL = v
+	}
 
 	db, err = sqlx.Open("postgres", DB_URL)
 	if err != nil {
-		log.Fatal("ERROR connecting postgres db:", err)
+		danger("ERROR connecting postgres db:", err)
 	}
+	// csvFile, err := os.Open(path.Join("data", "wine_db.csv"))
+	// if err != nil {
+	// 	danger("Error opening wine_db.csv: ", err)
+	// }
+	// defer csvFile.Close()
+	// urls := getImageUrl()
+	// wines := parseCSV(csvFile, urls)
+	// clearDB()
+	// err = store(wines)
+	// if err != nil {
+	// 	danger("Error during storing csv", err)
+	// }
+	info("DB is up and running.")
+}
+
+func clearDB() {
+	info("Clearing DB...")
+	path := filepath.Join("data", "setup.sql")
+
+	c, err := ioutil.ReadFile(path)
+	if err != nil {
+		danger("Error during reading setup.sql file:", err)
+	}
+	schema := string(c)
+
+	db.MustExec(schema)
+	info("DB Cleared.")
+}
+
+func parseCSV(csvFile io.Reader, urls map[string]string) (wines []Wine) {
+	info("Parsing CSV file...")
+	reader := csv.NewReader(bufio.NewReader(csvFile))
+
+	for {
+		var line []string
+		line, err := reader.Read()
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			danger("error duing parsing csv:", err)
+		}
+		wine := Wine{
+			Key:       line[1],
+			Store:     line[2],
+			WineName:  line[3],
+			WineType:  line[6],
+			Country:   line[7],
+			CreatedAt: time.Now(),
+			Image:     urls[line[1]],
+		}
+		wine.Priority, _ = strconv.Atoi(line[0])
+		locations := strings.Split(line[4], ", ")
+		wine.Locations = pq.Array(locations).(*pq.StringArray)
+		wine.Price, _ = strconv.Atoi(line[5])
+		wine.PriceType = mappingPrice(wine.Price)
+		if line[6] == "레드" {
+			wine.WineType = "red"
+		} else {
+			wine.WineType = "white"
+		}
+		grapes := []string{line[8]}
+		if line[9] != "" && line[9] != "0" && line[8] != "0" {
+			grapes = append(grapes, line[9])
+		}
+		if line[10] != "" && line[10] != "0" && line[9] != "0" {
+			grapes = append(grapes, line[10])
+		}
+		wine.Grapes = pq.Array(grapes).(*pq.StringArray)
+		wine.Acidity, _ = strconv.Atoi(line[11])
+		wine.Sweetness, _ = strconv.Atoi(line[12])
+		if line[13] == "1" {
+			wine.Sparkling = 1
+		} else {
+			wine.Sparkling = 0
+		}
+		foodMatches := strings.Split(line[14], ", ")
+		wine.FoodMatches = pq.Array(foodMatches).(*pq.StringArray)
+		wines = append(wines, wine)
+	}
+	info("Parsing CSV finished.")
+	return
+}
+
+func store(wines []Wine) (err error) {
+	info("Storing Wines to DB...")
+	_, err = db.NamedExec(`INSERT INTO wines (priority, key_id, store, wine_name, locations, price, price_type, wine_type, country, grapes, acidity, sweetness, sparkling, food_matches, image_url, created_at)
+		VALUES (:priority, :key_id, :store, :wine_name, :locations, :price, :price_type, :wine_type, :country, :grapes, :acidity, :sweetness, :sparkling, :food_matches, :image_url, :created_at)`, wines[1:])
+	if err != nil {
+		danger("ERROR during storing to Postgres DB:", err)
+	} else {
+		info("Wines stored to DB.")
+	}
+	return
 }

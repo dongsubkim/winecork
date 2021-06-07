@@ -36,7 +36,7 @@ create table wines (
   sweetness    int,
   sparkling    int,
   food_matches varchar(255)[],
-  -- image_url    text,
+  image_url    text,
   created_at   timestamp not null  
 );
 

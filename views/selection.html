@@ -3,26 +3,45 @@
 {{ end }}
 
 {{ define "content" }}
+<div class="top-bar">
+    <a href="/" class="top-bar-back-btn"></a>
+    <div class="middle-title">와인콕</div>
+    <div class="top-bar-right-btn">
+        <div class="feedback-btn"></div>
+        <div class="feedback-text">피드백</div>
+    </div>
+</div>
 <div class="middle-bar">
     <div class="middle-top-divider"></div>
 </div>
 
 <div class="selection-content">
     <div class="row selection-container">
-        <img class="selection-image" src={{ .wine.Image | printf "%q" }}>
+        <div class="image-container">
+            <img class="selection-image" src={{ .wine.Image | printf "%s" }}>
+        </div>
         <div class="info-box">
             <div class="selection-name">{{ .wine.WineName }}</div>
             <div class="selection-price">{{ .convertedPrice }}</div>
             <div class="info-detail">
-                <div class="selection-detail">{{ .wine.Country }}</div>
+                {{ .wineDetail }}
+                <!-- <div class="selection-detail">{{ .wine.Country }}</div>
                 <div class="divider">|</div>
                 <div class="selection-detail">{{ .grapes }}</div>
                 <div class="divider">|</div>
-                <div class="selection-detail">{{ .wine.WineType }}</div>
+                <div class="selection-detail">{{ .wineType }}</div> -->
             </div>
 
         </div>
     </div>
 
 </div>
+<script>
+    let img = document.querySelector(".selection-image");
+    if (img.width < img.height / 3) {
+        img.classList.add("narrow")
+    } else {
+        img.classList.add("wide")
+    }
+</script>
 {{ end }}

@@ -361,3 +361,12 @@ background-color:#6D0E8C;
 .ok-btn.show{
     display:flex;
 }
+
+.info-window{
+    font-size: 13px;
+    font-weight: 500;
+    width: 150px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}

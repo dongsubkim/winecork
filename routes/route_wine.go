@@ -32,9 +32,12 @@ func queryWine(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println("ERROR during queryWine:", err)
 	}
-	log.Println("wines: ", wines)
+	if len(wines) == 0 {
+		warning("No matching wines with:", r.Form)
+	}
 	err = goview.Render(w, http.StatusOK, "recommendation", goview.M{
-		"wines": wines,
+		"wines":        wines,
+		"wineNotFound": len(wines) == 0,
 	})
 	if err != nil {
 		log.Println(err)
@@ -53,7 +56,7 @@ func renderDetail(w http.ResponseWriter, r *http.Request) {
 	err = goview.Render(w, http.StatusOK, "selection", goview.M{
 		"wine":           wine,
 		"convertedPrice": wine.ConvertedPrice(),
-		"grapes":         wine.StripGrapes(),
+		"wineDetail":     wine.GetWineInfo(),
 	})
 	if err != nil {
 		log.Println("Error during rendering detail: ", err)
