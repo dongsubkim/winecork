@@ -1,0 +1,16 @@
+<nav class="col-md-3 col-lg-2 d-md-block sidebar">
+    <div id="sidebarMenu" class="position-sticky pt-3 px-3 d-flex flex-column vh-100">
+        <div class="navbar-brand">
+            <a class="fs-4 fs-bold text-white mx-3 text-decoration-none" aria-current="page" href="/">
+                Winecork
+            </a>
+        </div>
+        <ul class="nav">
+            <li class="nav-item mt-3">
+                <a class="nav-link text-white" href="/{{ .adminRoute }}/wines">와인 DB</a>
+                <a class="nav-link text-white" href="/{{ .adminRoute }}/queries">쿼리 로그</a>
+                <a class="nav-link text-white" href="/{{ .adminRoute }}/feedbacks">유저 피드백</a>
+            </li>
+        </ul>
+    </div>
+</nav>

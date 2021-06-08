@@ -1,0 +1,42 @@
+.container {
+    max-width: 100%;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    overflow:scroll;
+}
+
+.navbar {
+    background-color: #9179F2;
+}
+
+.winedb-title {
+    font-size: 28px;
+    font-weight: 500;
+    display:flex;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.sidebar {
+    position: -webkit-sticky;
+    position: sticky;
+}
+
+tr {
+    height: 100px;
+}
+
+.table-col {
+    overflow: auto;
+}
+
+.upload {
+    display:flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.btn {
+    margin-left: 32px;
+}

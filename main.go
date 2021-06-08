@@ -40,7 +40,7 @@ func main() {
 
 	r.Route("/", routes.WineRouter)
 
-	r.Mount("/admin", routes.AdminRouter())
+	r.Mount(fmt.Sprintf("/%s", os.Getenv("ADMIN_ROUTE")), routes.AdminRouter())
 	r.Mount("/feedback", routes.FeedbackRouter())
 
 	port := os.Getenv("PORT")

@@ -48,15 +48,29 @@ func (wine *Wine) ConvertedPrice() string {
 }
 
 func (wine *Wine) GetWineInfo() string {
-	return fmt.Sprintf("%s | %s | %s", wine.Country, wine.stripGrapes(), wine.getWineType())
+	return fmt.Sprintf("%s | %s | %s", wine.Country, wine.StripGrapes(), wine.GetWineType())
 }
 
-func (wine *Wine) stripGrapes() string {
+func (wine *Wine) StripGrapes() string {
 	s := fmt.Sprint(wine.Grapes)
 	return s[2 : len(s)-1]
 }
 
-func (wine *Wine) getWineType() string {
+func (wine *Wine) ListGrapes() string {
+	return listPqArray(wine.Grapes)
+}
+func (wine *Wine) ListLocations() string {
+	return listPqArray(wine.Locations)
+}
+func (wine *Wine) ListFoodMatches() string {
+	return listPqArray(wine.FoodMatches)
+}
+func listPqArray(sa *pq.StringArray) string {
+	s := fmt.Sprint(sa)
+	return strings.Join(strings.Split(s[2:len(s)-1], " "), ", ")
+}
+
+func (wine *Wine) GetWineType() string {
 	if wine.WineType == "red" {
 		return "레드 와인"
 	} else {
@@ -97,5 +111,10 @@ func QueryWines(store, wineType, foodMatch, price string) (wines []Wine, err err
 	if err != nil || len(wines) == 0 {
 		warning("Error during QueryWines, maybe no matching wines:", err)
 	}
+	return
+}
+
+func GetAllWines() (wines []Wine) {
+	db.Select(&wines, "SELECT * FROM wines ORDER BY priority limit 5")
 	return
 }

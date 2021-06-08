@@ -160,15 +160,15 @@
 }
 
 .wine-image.red{
-background-repeat: no-repeat;
+    background-repeat: no-repeat;
     background-size: cover;
-    background-image: url(../icons/wine_b.svg);
+    background-image: url(../icons/red_wine.png);
 }
 
 .wine-image.white{
-background-repeat: no-repeat;
+    background-repeat: no-repeat;
     background-size: cover;
-    background-image: url(../icons/wine_b.svg);
+    background-image: url(../icons/white_wine.png);
 }
 
 .wine-desc {
