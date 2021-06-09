@@ -34,7 +34,7 @@ func getWineDb(w http.ResponseWriter, r *http.Request) {
 	wines := data.GetAllWines()
 	err := goview.Render(w, http.StatusOK, "/admin/winedb", goview.M{
 		"adminRoute": os.Getenv("ADMIN_ROUTE"),
-		"wines": wines,
+		"wines":      wines,
 	})
 	if err != nil {
 		warning("Error during rendering wine db page: ", err)
@@ -44,8 +44,10 @@ func getWineDb(w http.ResponseWriter, r *http.Request) {
 }
 
 func getUserQueries(w http.ResponseWriter, r *http.Request) {
+	quereis := data.GetAllQueries()
 	err := goview.Render(w, http.StatusOK, "/admin/userQuery", goview.M{
 		"adminRoute": os.Getenv("ADMIN_ROUTE"),
+		"queries":    quereis,
 	})
 	if err != nil {
 		warning("Error during rendering user query page: ", err)
@@ -55,8 +57,10 @@ func getUserQueries(w http.ResponseWriter, r *http.Request) {
 }
 
 func getFeedbacks(w http.ResponseWriter, r *http.Request) {
+	feedbacks := data.GetAllFeedbacks()
 	err := goview.Render(w, http.StatusOK, "/admin/feedback", goview.M{
 		"adminRoute": os.Getenv("ADMIN_ROUTE"),
+		"feedbacks":  feedbacks,
 	})
 	if err != nil {
 		warning("Error during rendering user feedback page: ", err)

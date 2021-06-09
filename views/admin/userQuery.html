@@ -3,8 +3,39 @@
 {{ end }}
 
 {{ define "content" }}
-{{ include "partials/sidebar"}}
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-5">
-    USER QUERY
-</main>
+{{ include "partials/navbar"}}
+<div class="row">
+    {{ include "partials/navbar"}}
+    <main class="flex-shrink-0 content">
+        <div class="wine-container">
+            <div class="row winedb-title mb-3">
+                쿼리 로그
+            </div>
+            <div class="container-fluid table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">장소</th>
+                            <th scope="col">와인 종류</th>
+                            <th scope="col">가격</th>
+                            <th scope="col">음식</th>
+                            <th scope="col">시간</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ range .queries }}
+                        <tr>
+                            <td>{{ .Store }}</th>
+                            <td>{{ .GetWineType }}</th>
+                            <td>{{ .Price }}</th>
+                            <td>{{ .FoodMatch }}</th>
+                            <td>{{ .Date }}</td>
+                        </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
 {{ end }}

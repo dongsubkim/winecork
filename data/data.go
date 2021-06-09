@@ -20,7 +20,7 @@ var db *sqlx.DB
 var foodMatchingRed = map[string]string{
 	"no-food":       "A01",
 	"steak-beef":    "B01",
-	"steak-port":    "B02",
+	"steak-pork":    "B02",
 	"pasta-meat":    "C01",
 	"pasta-light":   "C02",
 	"salad":         "D01",
@@ -38,7 +38,7 @@ var foodMatchingWhite = map[string]string{
 	"fish-tuna":     "B01",
 	"fish-sushi":    "B02",
 	"fish-oyster":   "B03",
-	"steak-beef":    "C01",
+	"steak":         "C01",
 	"pasta-meat":    "D01",
 	"pasta-light":   "D02",
 	"salad":         "E01",
@@ -48,6 +48,33 @@ var foodMatchingWhite = map[string]string{
 	"western-light": "F04",
 	"dessert-salty": "G01",
 	"dessert-sweet": "G02",
+}
+
+var foodMatchingKorean = map[string]string{
+	"no-food":       "그냥 사둘게요",
+	"steak-beef":    "고기/스테이크 | 소/양고기",
+	"steak-pork":    "고기/스테이크 | 돼지/오리고기",
+	"pasta-meat":    "파스타 | 미트/오일/크림",
+	"pasta-light":   "파스타 | 담백",
+	"salad":         "샐러드",
+	"western-oily":  "양식/한식요리 | 기름진 요리",
+	"western-spicy": "양식/한식요리 | 매운양념요리",
+	"western-sweet": "양식/한식요리 | 달짝지근한 요리",
+	"western-light": "양식/한식요리 | 담백한 요리",
+	"dessert-salty": "핑거푸드/디저트 | 짭쪼름한 하몽/치즈/크래커",
+	"dessert-sweet": "핑거푸드/디저트 | 달달한 디저트",
+	"fish":          "해산물",
+	"fish-tuna":     "해산물 | 참치/연어",
+	"fish-sushi":    "해산물 | 스시",
+	"fish-oyster":   "해산물 | 굴",
+}
+
+var priceRangeRaw = map[string]string{
+	"price0": "￦1만↓",
+	"price1": "￦1만",
+	"price2": "￦2만",
+	"price3": "￦3만~￦4만",
+	"price4": "₩4만↑",
 }
 
 func init() {

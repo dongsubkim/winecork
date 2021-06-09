@@ -5,19 +5,17 @@
 {{ define "content" }}
 <div class="row">
     {{ include "partials/navbar"}}
-    <main class="flex-shrink-0">
+    <main class="flex-shrink-0 content">
         <div class="wine-container">
             <div class="row winedb-title mb-3">
                 와인 DB
             </div>
-            <div class="mb-3">
+            <div class="mb-3 upload-bar">
                 <form action="/uploadCSV" class="upload" method="POST" enctype="multipart/form-data">
-                    <div>
-                        <label for="csv" class="form-label">업로드 csv파일...<input id="my-file-selector" type="file"
-                                style="display:none;" onchange="$('#upload-file-info').val($(this).val());"></label>
-                        <input class="form-control" type="file" id="csv" name="csv" multiple data-show-upload="true"
-                            data-show-caption="true">
-                    </div>
+                    <label for="csv" class="form-label">업로드 csv파일<input id="my-file-selector" type="file"
+                            style="display:none;" onchange="$('#upload-file-info').val($(this).val());"></label>
+                    <input class="form-control" type="file" id="csv" name="csv" multiple data-show-upload="true"
+                        data-show-caption="true">
                     <button class="btn btn-primary">Submit</button>
                 </form>
             </div>
@@ -29,7 +27,7 @@
                             <th scope="col">Key</th>
                             <th scope="col">Store</th>
                             <th scope="col">Wine_Name</th>
-                            <th scope="col" class="table-col">Location</th>
+                            <th scope="col">Location</th>
                             <th scope="col">Price</th>
                             <th scope="col">Wine_Sort</th>
                             <th scope="col">Wine_Origin</th>
@@ -48,7 +46,7 @@
                             <td>{{ .Key }}</td>
                             <td>{{ .Store }}</td>
                             <td>{{ .WineName }}</td>
-                            <td class="table-col">{{ .ListLocations }}</td>
+                            <td>{{ .ListLocations }}</td>
                             <td>{{ .Price }}</td>
                             <td>{{ .GetWineType }}</td>
                             <td>{{ .Country }}</td>
@@ -65,65 +63,5 @@
             </div>
         </div>
     </main>
-    <!-- <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-5">
-        <div class="row">
-            <div class="row winedb-title mb-3">
-                와인 DB
-            </div>
-            <div class="mb-3">
-                <form action="/uploadCSV" class="upload" method="POST" enctype="multipart/form-data">
-                    <div>
-                        <label for="csv" class="form-label">업로드 csv파일...<input id="my-file-selector" type="file"
-                                style="display:none;" onchange="$('#upload-file-info').val($(this).val());"></label>
-                        <input class="form-control" type="file" id="csv" name="csv" multiple data-show-upload="true"
-                            data-show-caption="true">
-                    </div>
-                    <button class="btn btn-primary">Submit</button>
-                </form>
-            </div>
-            <div class="container-fluid table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Priority</th>
-                            <th scope="col">Key</th>
-                            <th scope="col">Store</th>
-                            <th scope="col">Wine_Name</th>
-                            <th scope="col" class="table-col">Location</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Wine_Sort</th>
-                            <th scope="col">Wine_Origin</th>
-                            <th scope="col">Grapes</th>
-                            <th scope="col">Acidity</th>
-                            <th scope="col">Sweetness</th>
-                            <th scope="col">Sparkling</th>
-                            <th scope="col">Food_match</th>
-                            <th scope="col">ImageURL</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{ range .wines }}
-                        <tr>
-                            <td>{{ .Priority }}</th>
-                            <td>{{ .Key }}</td>
-                            <td>{{ .Store }}</td>
-                            <td>{{ .WineName }}</td>
-                            <td class="table-col">{{ .ListLocations }}</td>
-                            <td>{{ .Price }}</td>
-                            <td>{{ .GetWineType }}</td>
-                            <td>{{ .Country }}</td>
-                            <td>{{ .ListGrapes }}</td>
-                            <td>{{ .Acidity }}</td>
-                            <td>{{ .Sweetness }}</td>
-                            <td>{{ .Sparkling }}</td>
-                            <td>{{ .ListFoodMatches }}</td>
-                            <td>{{ .Image }}</td>
-                        </tr>
-                        {{ end }}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </main> -->
 </div>
 {{ end }}

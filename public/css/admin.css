@@ -6,6 +6,10 @@
     overflow:scroll;
 }
 
+.content {
+    margin-top: 70px;
+}
+
 .navbar {
     background-color: #9179F2;
 }
@@ -31,12 +35,26 @@ tr {
     overflow: auto;
 }
 
-.upload {
+.upload-bar {
     display:flex;
-    justify-content: flex-start;
-    align-items: flex-end;
+    justify-content: center;
 }
 
 .btn {
     margin-left: 32px;
+}
+
+.upload {
+    display: flex;
+    align-items: baseline;
+    width: 80%;
+}
+
+.form-label {
+    min-width: 140px;
+}
+
+.date-col {
+    max-width: 120px;
+    width: 120px;
 }

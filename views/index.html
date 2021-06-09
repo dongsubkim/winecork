@@ -6,7 +6,7 @@
 <div class="top-bar">
     <div class="top-bar-left-btn"></div>
     <div class="middle-title">와인콕</div>
-    <div class="top-bar-right-btn">
+    <div class="top-bar-right-btn" data-bs-toggle="modal" data-bs-target="#feedbackModal">
         <div class="feedback-btn"></div>
         <div class="feedback-text">피드백</div>
     </div>
@@ -112,7 +112,7 @@
                 <div class="food-match-detail-col steak red" id="steak-beef">
                     소/양고기
                 </div>
-                <div class="food-match-detail-col steak red" id="steak-port">
+                <div class="food-match-detail-col steak red" id="steak-pork">
                     돼지/오리고기
                 </div>
                 <div class="food-match-detail-col pasta red white" id="pasta-meat">
@@ -206,11 +206,31 @@
         </div>
     </form>
 </div>
-
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">피드백을 남겨주세요!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/feedback" method="POST">
+                    <div class="mb-3">
+                        <textarea name="feedbackBody" id="feedbackBody" cols="30" rows="10"></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-sm btn-info" data-bs-dismiss="modal" aria-label="Close">제출</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     let markerClicked = false;
 </script>
 <script type="text/javascript" src={{ .key | printf "//dapi.kakao.com/v2/maps/sdk.js?appkey=%v" }}></script>
 <script src="/static/js/kakaoMap.js"></script>
 <script src="/static/js/question.js"></script>
+<script src="/static/js/feedback.js"></script>
 {{end}}

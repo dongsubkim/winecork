@@ -1,24 +1,6 @@
-drop table admins cascade;
-drop table sessions cascade;
-drop table wines cascade;
-drop table feedbacks cascade;
-
-create table admins (
-  id         serial primary key,
-  uuid       varchar(64) not null unique,
-  name       varchar(255),
-  email      varchar(255) not null unique,
-  password   varchar(255) not null,
-  created_at timestamp not null   
-);
-
-create table sessions (
-  id         serial primary key,
-  uuid       varchar(64) not null unique,
-  email      varchar(255),
-  admin_id   integer references admins(id),
-  created_at timestamp not null   
-);
+drop table if exists wines;
+drop table if exists feedbacks;
+drop table if exists querylogs;
 
 create table wines (
   id           serial primary key,
@@ -42,7 +24,15 @@ create table wines (
 
 create table feedbacks (
   id         serial primary key,
-  uuid       varchar(64) not null unique,
   body       text not null,
   created_at timestamp not null       
+);
+
+create table querylogs (
+  id serial primary key,
+  store        varchar(255),
+  price        varchar(64),
+  wine_type    varchar(64),
+  food_match   varchar(255),
+  created_at   timestamp not null
 );

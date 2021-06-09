@@ -3,8 +3,33 @@
 {{ end }}
 
 {{ define "content" }}
-{{ include "partials/sidebar"}}
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-5">
-    FEEDBACK
-</main>
+{{ include "partials/navbar"}}
+<div class="row">
+    {{ include "partials/navbar"}}
+    <main class="flex-shrink-0 content">
+        <div class="wine-container">
+            <div class="row winedb-title mb-3">
+                피드백
+            </div>
+            <div class="container-fluid table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="date-col">날짜</th>
+                            <th scope="col">내용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ range .feedbacks }}
+                        <tr>
+                            <td class="date-col">{{ .Date }}</th>
+                            <td>{{ .Body }}</td>
+                        </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
 {{ end }}

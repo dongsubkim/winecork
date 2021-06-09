@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -14,5 +13,7 @@ func FeedbackRouter() http.Handler {
 }
 
 func submitFeedback(w http.ResponseWriter, r *http.Request) {
-	log.Println("Submitting Feedback...")
+	info("Submitting Feedback...")
+	info(r.FormValue("feedbackBody"))
+	w.WriteHeader(http.StatusNoContent)
 }

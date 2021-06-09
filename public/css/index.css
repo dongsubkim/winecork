@@ -370,3 +370,14 @@ background-color:#6D0E8C;
     justify-content: center;
     align-items: center;
 }
+
+.modal-header {
+    background-color: #9179F2;
+    color: white;
+}
+
+textarea {
+    box-sizing: border-box; /* fit parent width */
+    height: 100%;
+    width: 100%
+}
