@@ -29,10 +29,10 @@
                     <i class="bi bi-chevron-down"></i>
                 </div>
                 <div class="selector-line"></div>
-                <div class="selector-row" id="lotte-mart">롯데마트</div>
-                <div class="selector-row" id="lotte-dep">롯데 백화점</div>
-                <div class="selector-row" id="emart">이마트</div>
-                <div class="selector-row" id="ssg">신세계백화점</div>
+                <div class="selector-row cand" id="lotte-mart">롯데마트</div>
+                <div class="selector-row cand" id="lotte-dep">롯데백화점</div>
+                <div class="selector-row cand" id="emart">이마트</div>
+                <div class="selector-row cand" id="ssg">신세계백화점</div>
                 <div class="selector-row selected-store"></div>
             </div>
         </div>
@@ -229,6 +229,8 @@
 </div>
 <script>
     let markerClicked = false;
+    let storeLocations = {{ .storeLocations }};
+    storeLocations = storeLocations.split("\n");
 </script>
 <script type="text/javascript"
     src={{ .key | printf "//dapi.kakao.com/v2/maps/sdk.js?appkey=%v&libraries=services" }}></script>

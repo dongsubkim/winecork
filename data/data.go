@@ -3,10 +3,10 @@ package data
 import (
 	"bufio"
 	"encoding/csv"
+	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
-	"path/filepath"
+	"path"
 	"strconv"
 	"strings"
 	"time"
@@ -77,6 +77,8 @@ var priceRangeRaw = map[string]string{
 	"price4": "₩4만↑",
 }
 
+var stores = map[string]bool{}
+
 func init() {
 	initLogger()
 	info("Initiating DB")
@@ -90,39 +92,78 @@ func init() {
 	if err != nil {
 		danger("ERROR connecting postgres db:", err)
 	}
-	// csvFile, err := os.Open(path.Join("data", "wine_db.csv"))
-	// if err != nil {
-	// 	danger("Error opening wine_db.csv: ", err)
-	// }
-	// defer csvFile.Close()
-	// urls := getImageUrl()
+	csvFile, err := os.Open(path.Join("data", "wine_db.csv"))
+	if err != nil {
+		danger("Error opening wine_db.csv: ", err)
+	}
+	defer csvFile.Close()
+	urls := getImageUrl()
+	_ = parseCSV(csvFile, urls)
 	// wines := parseCSV(csvFile, urls)
 	// clearDB()
-	// err = store(wines)
-	// if err != nil {
-	// 	danger("Error during storing csv", err)
-	// }
+	// err = insertWines(wines)
+	if err != nil {
+		danger("Error during storing csv", err)
+	}
 	info("DB is up and running.")
 }
 
 func clearDB() {
-	info("Clearing DB...")
-	path := filepath.Join("data", "setup.sql")
+	info("Clearing Wine DB...")
+	// path := filepath.Join("data", "setup.sql")
 
-	c, err := ioutil.ReadFile(path)
-	if err != nil {
-		danger("Error during reading setup.sql file:", err)
-	}
-	schema := string(c)
+	// c, err := ioutil.ReadFile(path)
+	// if err != nil {
+	// 	danger("Error during reading setup.sql file:", err)
+	// }
+	// schema := string(c)
+	schema := `
+	drop table if exists wines;
+	
+	create table wines (
+	  id           serial primary key,
+	  priority     int,
+	  key_id       varchar(255) not null unique,
+	  store        varchar(255),
+	  wine_name    varchar(255),
+	  locations    varchar(255)[],
+	  price        int,
+	  price_type   varchar(64),
+	  wine_type    varchar(64),
+	  country      varchar(255),
+	  grapes       varchar(255)[],
+	  acidity      int,
+	  sweetness    int,
+	  sparkling    int,
+	  food_matches varchar(255)[],
+	  image_url    text,
+	  created_at   timestamp not null  
+	);
+	`
 
 	db.MustExec(schema)
 	info("DB Cleared.")
+}
+
+func addLocations(s string, locs []string) {
+	for _, v := range locs {
+		stores[fmt.Sprintf("%s %s", s, v)] = true
+	}
+}
+
+func GetStoreLocations() string {
+	s := ""
+	for k, _ := range stores {
+		s += fmt.Sprintln(k)
+	}
+	return s
 }
 
 func parseCSV(csvFile io.Reader, urls map[string]string) (wines []Wine) {
 	info("Parsing CSV file...")
 	reader := csv.NewReader(bufio.NewReader(csvFile))
 
+	isHeader := true
 	for {
 		var line []string
 		line, err := reader.Read()
@@ -130,10 +171,17 @@ func parseCSV(csvFile io.Reader, urls map[string]string) (wines []Wine) {
 			break
 		} else if err != nil {
 			danger("error duing parsing csv:", err)
+		} else if isHeader {
+			isHeader = false
+			continue
+		}
+		store := line[2]
+		if store == "이마트몰" {
+			store = "이마트"
 		}
 		wine := Wine{
 			Key:       line[1],
-			Store:     line[2],
+			Store:     store,
 			WineName:  line[3],
 			WineType:  line[6],
 			Country:   line[7],
@@ -142,6 +190,10 @@ func parseCSV(csvFile io.Reader, urls map[string]string) (wines []Wine) {
 		}
 		wine.Priority, _ = strconv.Atoi(line[0])
 		locations := strings.Split(line[4], ", ")
+		if len(locations) == 0 && store != "이마트" {
+			continue
+		}
+		addLocations(store, locations)
 		wine.Locations = pq.Array(locations).(*pq.StringArray)
 		wine.Price, _ = strconv.Atoi(line[5])
 		wine.PriceType = mappingPrice(wine.Price)
@@ -173,7 +225,7 @@ func parseCSV(csvFile io.Reader, urls map[string]string) (wines []Wine) {
 	return
 }
 
-func store(wines []Wine) (err error) {
+func insertWines(wines []Wine) (err error) {
 	info("Storing Wines to DB...")
 	_, err = db.NamedExec(`INSERT INTO wines (priority, key_id, store, wine_name, locations, price, price_type, wine_type, country, grapes, acidity, sweetness, sparkling, food_matches, image_url, created_at)
 		VALUES (:priority, :key_id, :store, :wine_name, :locations, :price, :price_type, :wine_type, :country, :grapes, :acidity, :sweetness, :sparkling, :food_matches, :image_url, :created_at)`, wines[1:])

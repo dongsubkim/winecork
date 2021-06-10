@@ -20,6 +20,7 @@ func renderIndex(w http.ResponseWriter, r *http.Request) {
 	log.Println("Rendering index page...")
 	err := goview.Render(w, http.StatusOK, "index", goview.M{
 		"key": os.Getenv("MAP_API_KEY"),
+		"storeLocations": data.GetStoreLocations(),
 	})
 	if err != nil {
 		return

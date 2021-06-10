@@ -194,6 +194,16 @@ storeSelector.addEventListener("click", function () {
 selectOptions.forEach(el => {
     el.addEventListener("click", function () {
         selectedStore.innerText = this.innerText
+        if (this.classList.contains("cand")) {
+            for (let marker of markers) {
+                storeType = marker.getTitle().split(" ")[0]
+                if (storeType != this.innerText) {
+                    marker.setVisible(false);
+                } else {
+                    marker.setVisible(true);
+                }
+            }
+        }
     })
 })
 
@@ -214,4 +224,3 @@ function allSelected() {
     submitButton.classList.add("show")
     return true
 }
-

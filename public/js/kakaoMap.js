@@ -17,12 +17,14 @@ var options = { //지도를 생성할 때 필요한 기본 옵션
 };
 var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
+var markers = [];
+
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((pos) => {
             map.setCenter(new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude))
             for (let store of stores) {
-                places.keywordSearch(store, callback, {
+                places.keywordSearch(store, searchCallback, {
                     useMapCenter: true,
                     radius: 10000
                 });
@@ -34,40 +36,40 @@ function getLocation() {
 }
 getLocation()
 
-const lotteMart = [
-    {
-        store: "롯데마트",
-        lat: 37.28734256346641,
-        lng: 127.0596781925285
-    }
-]
+// const lotteMart = [
+//     {
+//         store: "롯데마트",
+//         lat: 37.28734256346641,
+//         lng: 127.0596781925285
+//     }
+// ]
 
-const lotteDep = [
-    {
-        store: "롯데백화점",
-        location: "본점",
-        lat: 37.28834256346641,
-        lng: 127.0596781925285
-    }
-]
+// const lotteDep = [
+//     {
+//         store: "롯데백화점",
+//         location: "본점",
+//         lat: 37.28834256346641,
+//         lng: 127.0596781925285
+//     }
+// ]
 
-const emart = [
-    {
-        store: "이마트",
-        location: "가양점",
-        lat: 37.28934256346641,
-        lng: 127.0596781925285
-    }
-]
+// const emart = [
+//     {
+//         store: "이마트",
+//         location: "가양점",
+//         lat: 37.28934256346641,
+//         lng: 127.0596781925285
+//     }
+// ]
 
-const ssg = [
-    {
-        store: "신세계백화점",
-        location: "본점",
-        lat: 37.28634256346641,
-        lng: 127.0596781925285
-    }
-]
+// const ssg = [
+//     {
+//         store: "신세계백화점",
+//         location: "본점",
+//         lat: 37.28634256346641,
+//         lng: 127.0596781925285
+//     }
+// ]
 
 function createMarker(info) {
     let markerPos = new kakao.maps.LatLng(info.lat, info.lng);
@@ -98,6 +100,7 @@ function createMarker(info) {
         // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
         infowindow.close();
     });
+    markers.push(marker);
 }
 
 
@@ -111,29 +114,31 @@ function clickMarker() {
     markerClicked = true
 }
 
-for (let store of lotteMart) {
-    createMarker(store)
-}
+// for (let store of lotteMart) {
+//     createMarker(store)
+// }
 
-for (let store of lotteDep) {
-    createMarker(store)
-}
+// for (let store of lotteDep) {
+//     createMarker(store)
+// }
 
-for (let store of emart) {
-    createMarker(store)
-}
+// for (let store of emart) {
+//     createMarker(store)
+// }
 
-for (let store of ssg) {
-    createMarker(store)
-}
+// for (let store of ssg) {
+//     createMarker(store)
+// }
 
 var places = new kakao.maps.services.Places(map);
-var callback = function (result, status, pagination) {
+var searchCallback = function (result, status, pagination) {
     if (status === kakao.maps.services.Status.OK) {
         for (let store of result) {
             names = store.place_name.split(" ");
+            if (!storeLocations.includes(store.place_name) && names[0] != "롯데마트") {
+                continue
+            }
             if (stores.includes(names[0]) && names.length == 2) {
-                console.log(store)
                 info = {
                     store: names[0],
                     location: names[1],
@@ -148,3 +153,4 @@ var callback = function (result, status, pagination) {
         }
     }
 };
+
