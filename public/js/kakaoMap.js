@@ -7,6 +7,8 @@ const answerWineType = document.querySelector("#answerWineType");
 const answerPriceRange = document.querySelector("#answerPriceRange");
 const answerFoodMatch = document.querySelector("#answerFoodMatch");
 
+const stores = ["롯데마트", "롯데백화점", "신세계백화점", "이마트"]
+
 var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 
 var options = { //지도를 생성할 때 필요한 기본 옵션
@@ -19,6 +21,12 @@ function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((pos) => {
             map.setCenter(new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude))
+            for (let store of stores) {
+                places.keywordSearch(store, callback, {
+                    useMapCenter: true,
+                    radius: 10000
+                });
+            }
         });
     } else {
         console.log("Geolocation is not supported by this browser.")
@@ -63,10 +71,7 @@ const ssg = [
 
 function createMarker(info) {
     let markerPos = new kakao.maps.LatLng(info.lat, info.lng);
-    let title = info.store
-    if (info.store != "롯데마트") {
-        title += " " + info.location
-    }
+    let title = info.store + " " + info.location
     let marker = new kakao.maps.Marker({
         position: markerPos,
         title: title,
@@ -122,50 +127,24 @@ for (let store of ssg) {
     createMarker(store)
 }
 
-
-
-// // 마커가 표시될 위치입니다 
-// var markerPosition1 = new kakao.maps.LatLng(33.450701, 126.570667);
-// var markerPosition2 = new kakao.maps.LatLng(33.451701, 126.570667);
-// var markerPosition3 = new kakao.maps.LatLng(33.452701, 126.570667);
-// var markerPosition4 = new kakao.maps.LatLng(33.453701, 126.570667);
-
-// // 마커를 생성합니다
-// var marker1 = new kakao.maps.Marker({
-//     position: markerPosition1,
-//     title: "롯데마트",
-//     clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
-// });
-// // 마커를 생성합니다
-// var marker2 = new kakao.maps.Marker({
-//     position: markerPosition2,
-//     title: "롯데백화점 본점",
-//     clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
-// });
-
-// // 마커를 생성합니다
-// var marker3 = new kakao.maps.Marker({
-//     position: markerPosition3,
-//     title: "이마트몰 가양점",
-//     clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
-// });
-
-// // 마커를 생성합니다
-// var marker4 = new kakao.maps.Marker({
-//     position: markerPosition4,
-//     title: "신세계백화점 강남점",
-//     clickable: true // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
-// });
-
-
-// // 마커가 지도 위에 표시되도록 설정합니다
-// marker1.setMap(map);
-// marker2.setMap(map);
-// marker3.setMap(map);
-// marker4.setMap(map);
-
-// // 마커에 클릭이벤트를 등록합니다
-// kakao.maps.event.addListener(marker1, 'click', clickMarker);
-// kakao.maps.event.addListener(marker2, 'click', clickMarker);
-// kakao.maps.event.addListener(marker3, 'click', clickMarker);
-// kakao.maps.event.addListener(marker4, 'click', clickMarker);
+var places = new kakao.maps.services.Places(map);
+var callback = function (result, status, pagination) {
+    if (status === kakao.maps.services.Status.OK) {
+        for (let store of result) {
+            names = store.place_name.split(" ");
+            if (stores.includes(names[0]) && names.length == 2) {
+                console.log(store)
+                info = {
+                    store: names[0],
+                    location: names[1],
+                    lat: parseFloat(store.y),
+                    lng: parseFloat(store.x)
+                }
+                createMarker(info)
+            }
+        }
+        if (pagination.hasNextPage) {
+            pagination.nextPage()
+        }
+    }
+};

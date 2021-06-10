@@ -15,7 +15,6 @@ func FeedbackRouter() http.Handler {
 
 func submitFeedback(w http.ResponseWriter, r *http.Request) {
 	info("Submitting Feedback...")
-	info(r.FormValue("feedbackBody"))
 	body := r.FormValue("feedbackBody")
 	w.WriteHeader(http.StatusNoContent)
 	if len(body) == 0 {
