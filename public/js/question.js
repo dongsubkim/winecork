@@ -139,9 +139,7 @@ Array.prototype.forEach.call(foodDetailCol, function (el) {
         if (i > 0) {
             foodMatched.innerText = foodMatched.innerText.slice(0, i)
         }
-        console.log(foodMatched);
-        foodMatched = foodMatched.trim();
-        foodMatched.innerText += " | " + this.innerText
+        foodMatched.innerText = foodMatched.innerText.trim() + " | " + this.innerText
         console.log(foodMatched);
         answerFoodMatch.value = this.id
         let q = document.querySelector(".question-4");
