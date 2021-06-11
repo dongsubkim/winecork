@@ -9,26 +9,28 @@ const submitForm = document.querySelector(".submit-form");
 const submitButton = document.querySelector(".ok-btn");
 const questionContainer = document.querySelector("#question-container");
 const foodMatched = document.querySelector("#foodMatch");
+const foodDetails = document.querySelectorAll(".food-match-detail");
+const foodDetailCol = document.querySelectorAll(".food-match-detail-col");
+let priceSelector = document.getElementsByClassName("price-rect");
 
 let foodMatchSelected = false;
 questionContainer.addEventListener("click", allSelected)
 
 function clickQ1() {
-    console.log("Question 1 clicked!")
     const question = document.getElementById("q1-container");
     const map = document.getElementById('map');
-    console.log("marker clicked: ", markerClicked)
     if (markerClicked == true) {
         question.classList.remove("active")
     } else {
         question.classList.add("active")
         map.classList.remove("d-none")
+        storeSelector.classList.remove("d-none")
+        show.classList.add("d-none")
     }
     markerClicked = false;
 }
 
 function clickQ2() {
-    console.log("Question 2 clicked!")
     if (answerStore.value.length == 0) {
         alert("픽업 장소를 먼저 선택해 주세요.")
         return
@@ -40,7 +42,6 @@ function clickQ2() {
 }
 
 function clickQ3() {
-    console.log("Question 3 clicked!")
     if (answerWineType.value.length == 0) {
         alert("위의 질문들을 먼저 완료해 주세요.")
         return
@@ -56,12 +57,15 @@ function clickQ4() {
         alert("위의 질문들을 먼저 완료해 주세요.")
         return
     }
-    console.log("Question 4 clicked!")
     let question = document.querySelector(".question-4")
     let row = document.querySelector(".food-matcher")
     if (!foodMatchSelected) {
         question.classList.add("active")
         row.classList.remove("d-none")
+    } else {
+        for (let row of foodDetails) {
+            row.classList.remove("show");
+        }
     }
     foodMatchSelected = false
 }
@@ -77,8 +81,6 @@ function wineTypeSelector(e) {
     wt.classList.remove("d-none");
     answerWineType.value = this.id;
 }
-
-let priceSelector = document.getElementsByClassName("price-rect");
 
 Array.prototype.forEach.call(priceSelector, function (el) {
     el.addEventListener("click", function () {
@@ -98,7 +100,6 @@ function offPriceRange() {
     })
 }
 
-let foodDetails = document.querySelectorAll(".food-match-detail");
 function foodDetailShow(wineType, foodType) {
     if (foodType == "salad" || foodType == "no-food" || (wineType == "red" && foodType == "fish") || (wineType == "white" && foodType == "steak")) {
         let q = document.querySelector(".question-4");
@@ -132,7 +133,6 @@ function foodDetailShow(wineType, foodType) {
     }
 }
 
-let foodDetailCol = document.querySelectorAll(".food-match-detail-col");
 Array.prototype.forEach.call(foodDetailCol, function (el) {
     el.addEventListener("click", function () {
         let i = foodMatched.innerText.indexOf(" | ");
@@ -156,11 +156,13 @@ Array.prototype.forEach.call(foods, function (el) {
         foodMatched.innerText = this.innerText;
         answerFoodMatch.value = this.id;
         let wineType = document.querySelector("#wineType").innerText;
+        console.log(wineType)
         if (wineType == "레드 와인") {
             wineType = "red"
         } else {
             wineType = "white"
         }
+        console.log(wineType)
         foodDetailShow(wineType, this.id)
     })
 })

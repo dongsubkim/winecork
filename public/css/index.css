@@ -114,12 +114,13 @@
 
 .question-response {
     color: purple;
-    width: 100%;
+    width: 200px;
     font-weight: 700;
     padding-left: 40px;
     margin-top: 1px;
     font-size: 12px;   
     justify-content: start;
+    overflow: visible;
 }
 
 .question-2.active {
@@ -236,7 +237,7 @@ background-color:#6D0E8C;
     margin-top:16px;
     display:flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .food-match-row {
