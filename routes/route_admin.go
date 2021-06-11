@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"log"
 	"net/http"
 	"os"
 
@@ -15,7 +16,7 @@ func AdminRouter() http.Handler {
 	r.Get("/wines", getWineDb)
 	r.Get("/queries", getUserQueries)
 	r.Get("/feedbacks", getFeedbacks)
-
+	r.Post("/upload", uploadCsv)
 	return r
 }
 
@@ -67,4 +68,20 @@ func getFeedbacks(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusInternalServerError)
 		return
 	}
+}
+
+func uploadCsv(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(1024 * 1024 * 32)
+	fileHeader := r.MultipartForm.File["csv"][0]
+	file, err := fileHeader.Open()
+	if err != nil {
+		log.Println("Fail to open file")
+		return
+	}
+	defer file.Close()
+	err = data.SaveCSV(file)
+	if err != nil {
+		danger("Error during SaveCSV:", err)
+	}
+	http.Redirect(w, r, "/", http.StatusNoContent)
 }

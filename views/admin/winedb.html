@@ -11,7 +11,7 @@
                 와인 DB
             </div>
             <div class="mb-3 upload-bar">
-                <form action="/uploadCSV" class="upload" method="POST" enctype="multipart/form-data">
+                <form action="/{{ .adminRoute }}/upload" class="upload" method="POST" enctype="multipart/form-data">
                     <label for="csv" class="form-label">업로드 csv파일<input id="my-file-selector" type="file"
                             style="display:none;" onchange="$('#upload-file-info').val($(this).val());"></label>
                     <input class="form-control" type="file" id="csv" name="csv" multiple data-show-upload="true"

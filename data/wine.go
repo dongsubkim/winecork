@@ -122,9 +122,6 @@ func QueryWines(store, wineType, foodMatch, price string) (wines []Wine, err err
 		store, location = storeLocation[0], storeLocation[1]
 	}
 	price = string(price[len(price)-1])
-	if store == "이마트" {
-		store = "이마트몰"
-	}
 	fmt.Println(store, location, wineType, foodMatch, price)
 	if store == "롯데마트" {
 		statement = "SELECT * FROM wines WHERE store = $1 AND price_type = $2 AND wine_type = $3 AND $4=any(food_matches) ORDER BY priority LIMIT 2"
@@ -140,7 +137,7 @@ func QueryWines(store, wineType, foodMatch, price string) (wines []Wine, err err
 }
 
 func GetAllWines() (wines []Wine) {
-	db.Select(&wines, "SELECT * FROM wines ORDER BY priority limit 20")
+	db.Select(&wines, "SELECT * FROM wines ORDER BY priority")
 	return
 }
 

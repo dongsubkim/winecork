@@ -97,18 +97,15 @@ func init() {
 		danger("Error opening wine_db.csv: ", err)
 	}
 	defer csvFile.Close()
-	urls := getImageUrl()
-	_ = parseCSV(csvFile, urls)
-	// wines := parseCSV(csvFile, urls)
-	// clearDB()
-	// err = insertWines(wines)
+
+	err = SaveCSV(csvFile)
 	if err != nil {
-		danger("Error during storing csv", err)
+		danger("Error during saveCSV:", err)
 	}
 	info("DB is up and running.")
 }
 
-func clearDB() {
+func clearWineDB() {
 	info("Clearing Wine DB...")
 	// path := filepath.Join("data", "setup.sql")
 
@@ -157,6 +154,17 @@ func GetStoreLocations() string {
 		s += fmt.Sprintln(k)
 	}
 	return s
+}
+
+func SaveCSV(csvFile io.Reader) (err error) {
+	urls := getImageUrl()
+	wines := parseCSV(csvFile, urls)
+	clearWineDB()
+	err = insertWines(wines)
+	if err != nil {
+		danger("ERROR during insertWines:", err)
+	}
+	return
 }
 
 func parseCSV(csvFile io.Reader, urls map[string]string) (wines []Wine) {
@@ -228,7 +236,7 @@ func parseCSV(csvFile io.Reader, urls map[string]string) (wines []Wine) {
 func insertWines(wines []Wine) (err error) {
 	info("Storing Wines to DB...")
 	_, err = db.NamedExec(`INSERT INTO wines (priority, key_id, store, wine_name, locations, price, price_type, wine_type, country, grapes, acidity, sweetness, sparkling, food_matches, image_url, created_at)
-		VALUES (:priority, :key_id, :store, :wine_name, :locations, :price, :price_type, :wine_type, :country, :grapes, :acidity, :sweetness, :sparkling, :food_matches, :image_url, :created_at)`, wines[1:])
+		VALUES (:priority, :key_id, :store, :wine_name, :locations, :price, :price_type, :wine_type, :country, :grapes, :acidity, :sweetness, :sparkling, :food_matches, :image_url, :created_at)`, wines)
 	if err != nil {
 		danger("ERROR during storing to Postgres DB:", err)
 	} else {
