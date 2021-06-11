@@ -156,11 +156,13 @@ Array.prototype.forEach.call(foods, function (el) {
         foodMatched.innerText = this.innerText;
         answerFoodMatch.value = this.id;
         let wineType = document.querySelector("#wineType").innerText;
+        console.log(wineType)
         if (wineType.startsWith("레드")) {
             wineType = "red"
         } else {
             wineType = "white"
         }
+        console.log(wineType)
         foodDetailShow(wineType, this.id)
     })
 })
