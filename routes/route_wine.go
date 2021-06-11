@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"log"
 	"net/http"
 	"os"
 
@@ -17,9 +16,9 @@ func WineRouter(r chi.Router) {
 }
 
 func renderIndex(w http.ResponseWriter, r *http.Request) {
-	log.Println("Rendering index page...")
+	info("Rendering index page...")
 	err := goview.Render(w, http.StatusOK, "index", goview.M{
-		"key": os.Getenv("MAP_API_KEY"),
+		"key":            os.Getenv("MAP_API_KEY"),
 		"storeLocations": data.GetStoreLocations(),
 	})
 	if err != nil {
@@ -28,10 +27,10 @@ func renderIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func queryWine(w http.ResponseWriter, r *http.Request) {
-	log.Println("Querying Wine...")
+	info("Querying Wine...")
 	wines, err := data.QueryWines(r.FormValue("store"), r.FormValue("wine_type"), r.FormValue("food_match"), r.FormValue("price_range"))
 	if err != nil {
-		log.Println("ERROR during queryWine:", err)
+		warning("ERROR during queryWine:", err)
 	}
 	if len(wines) == 0 {
 		warning("No matching wines with:", r.Form)
@@ -41,16 +40,15 @@ func queryWine(w http.ResponseWriter, r *http.Request) {
 		"wineNotFound": len(wines) == 0,
 	})
 	if err != nil {
-		log.Println(err)
+		warning(err)
 	}
 }
 
 func renderDetail(w http.ResponseWriter, r *http.Request) {
-	log.Println("Rendering details...")
-	log.Println("Wine Id: ", r.FormValue("id"))
+	info("Rendering details...")
 	wine, err := data.WineById(r.FormValue("id"))
 	if err != nil {
-		log.Println("Fail to get wine by id: ", err)
+		warning("Fail to get wine by id: ", err)
 		http.Redirect(w, r, "/", http.StatusInternalServerError)
 		return
 	}
@@ -60,7 +58,7 @@ func renderDetail(w http.ResponseWriter, r *http.Request) {
 		"wineDetail":     wine.GetWineInfo(),
 	})
 	if err != nil {
-		log.Println("Error during rendering detail: ", err)
+		warning("Error during rendering detail: ", err)
 		http.Redirect(w, r, "/", http.StatusInternalServerError)
 		return
 	}
