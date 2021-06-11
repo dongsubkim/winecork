@@ -139,7 +139,10 @@ Array.prototype.forEach.call(foodDetailCol, function (el) {
         if (i > 0) {
             foodMatched.innerText = foodMatched.innerText.slice(0, i)
         }
+        console.log(foodMatched);
+        foodMatched = foodMatched.trim();
         foodMatched.innerText += " | " + this.innerText
+        console.log(foodMatched);
         answerFoodMatch.value = this.id
         let q = document.querySelector(".question-4");
         q.classList.remove("active");
@@ -156,13 +159,11 @@ Array.prototype.forEach.call(foods, function (el) {
         foodMatched.innerText = this.innerText;
         answerFoodMatch.value = this.id;
         let wineType = document.querySelector("#wineType").innerText;
-        console.log(wineType)
         if (wineType.startsWith("레드")) {
             wineType = "red"
         } else {
             wineType = "white"
         }
-        console.log(wineType)
         foodDetailShow(wineType, this.id)
     })
 })
