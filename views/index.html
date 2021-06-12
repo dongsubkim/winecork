@@ -3,9 +3,12 @@
 {{ end }}
 
 {{ define "content" }}
+<script type="text/javascript"
+    src={{ .key | printf "//dapi.kakao.com/v2/maps/sdk.js?appkey=%v&libraries=services" }}></script>
+
 <div class="top-bar">
     <div class="top-bar-left-btn"></div>
-    <div class="middle-title">와인콕</div>
+    <div class="middle-title">와인콕🍷</div>
     <div class="top-bar-right-btn" data-bs-toggle="modal" data-bs-target="#feedbackModal">
         <div class="feedback-btn"></div>
         <div class="feedback-text">피드백</div>
@@ -13,50 +16,109 @@
 </div>
 <div class="middle-bar">
     <div class="middle-top-divider"></div>
-    <div class="middle-bar-text">네 개의 질문만 답해주세요.<br>와인콕이 딱 맞는 와인 찾아드릴게요</div>
+    <div class="middle-bar-text">세 개의 질문만 답해주세요.<br>와인콕이 딱 맞는 와인 찾아드릴게요</div>
 </div>
 
 <div class="outer-container" id="question-container">
-    <div class="question question-1 active" onclick=clickQ1() id="q1-container">
+    <div class="question question-1 active" onclick=clickQ1()>
         <div class="question-title-row">
-            <div><span class="question-num">1</span> <span class="question-text">어디서 사실거에요?</span></div>
-            <div class="d-none question-response pickup-location" id="pickUpLocation"></div>
+            <div><span class="question-num">1</span> <span class="question-text">어떤 음식이랑 드실 거에요?</span></div>
+            <div class="d-none question-response food-match" id="foodMatch"></div>
         </div>
-        <div class="store-selector">
-            <div class="selector-box">
-                <div class="selector-row title">
-                    마트/ 백화점
-                    <i class="bi bi-chevron-down"></i>
+        <div class="food-matcher">
+            <div class="food-match-row row1">
+                <div class="food-match-food col1" id="no-food">
+                    <div class="food-match-image no-food"></div>
+                    <div class="food-match-text">그냥 사둘게요</div>
                 </div>
-                <div class="selector-line"></div>
-                <div class="selector-row cand" id="lotte-mart">롯데마트</div>
-                <div class="selector-row cand" id="lotte-dep">롯데백화점</div>
-                <div class="selector-row cand" id="emart">이마트</div>
-                <div class="selector-row cand" id="ssg">신세계백화점</div>
-                <div class="selector-row selected-store"></div>
+                <div class="food-match-food col2" id="steak">
+                    <div class="food-match-image steak"></div>
+                    <div class="food-match-text">고기/스테이크</div>
+                </div>
+                <div class="food-match-food col3" id="pasta">
+                    <div class="food-match-image pasta"></div>
+                    <div class="food-match-text">파스타</div>
+                </div>
             </div>
+            <div class="food-match-detail row1">
+                <div class="food-match-detail-col steak" id="steak-beef">
+                    소/양고기
+                </div>
+                <div class="food-match-detail-col steak" id="steak-pork">
+                    돼지/오리고기
+                </div>
+                <div class="food-match-detail-col pasta" id="pasta-meat">
+                    미트/오일/크림
+                </div>
+                <div class="food-match-detail-col pasta" id="pasta-light">
+                    담백
+                </div>
+            </div>
+            <div class="food-match-row row2">
+                <div class="food-match-food col1" id="salad">
+                    <div class="food-match-image salad"></div>
+                    <div class="food-match-text">샐러드</div>
+                </div>
+                <div class="food-match-food col2" id="western">
+                    <div class="food-match-image western"></div>
+                    <div class="food-match-text">양식/한식요리</div>
+                </div>
+                <div class="food-match-food col3" id="fish">
+                    <div class="food-match-image fish"></div>
+                    <div class="food-match-text">생선/해산물</div>
+                </div>
+            </div>
+            <div class="food-match-detail row2">
+                <div class="food-match-detail-col western" id="western-oily">
+                    기름진 요리
+                </div>
+                <div class="food-match-detail-col western" id="western-spicy">
+                    매운양념요리
+                </div>
+                <div class="food-match-detail-col western" id="western-sweet">
+                    달짝지근한 요리
+                </div>
+                <div class="food-match-detail-col western" id="western-light">
+                    담백한 요리
+                </div>
+                <div class="food-match-detail-col fish" id="fish-tuna">
+                    참치/연어
+                </div>
+                <div class="food-match-detail-col fish" id="fish-sushi">
+                    스시
+                </div>
+                <div class="food-match-detail-col fish" id="fish-oyster">
+                    굴
+                </div>
+            </div>
+            <div class="food-match-row row3">
+                <div class="food-match-food col1" id="dessert">
+                    <div class="food-match-image dessert"></div>
+                    <div class="food-match-text">핑거푸드/디저트</div>
+                </div>
+                <div class="food-match-food col2">
+                    <div class="food-match-image d-none"></div>
+                    <div class="food-match-text d-none"></div>
+                </div>
+                <div class="food-match-food col3">
+                    <div class="food-match-image d-none"></div>
+                    <div class="food-match-text d-none"></div>
+                </div>
+            </div>
+            <div class="food-match-detail row3">
+                <div class="food-match-detail-col dessert" id="dessert-salty">
+                    짭쪼름한 하몽/치즈/크래커
+                </div>
+                <div class="food-match-detail-col dessert" id="dessert-sweet">
+                    달달한 디저트
+                </div>
+            </div>
+
         </div>
-        <div id="map"></div>
     </div>
     <div class="question question-2" onclick=clickQ2()>
         <div class="question-title-row">
-            <div><span class="question-num">2</span> <span class="question-text">레드 or 화이트 와인</span></div>
-            <div class="d-none question-response wine-type" id="wineType"></div>
-        </div>
-        <div class="wine-selector-row d-none">
-            <div class="wine-selector red" id="red">
-                <div class="wine-image red"></div>
-                <div class="wine-desc red">레드 와인</div>
-            </div>
-            <div class="wine-selector white" id="white">
-                <div class="wine-image white"></div>
-                <div class="wine-desc white">화이트/로제 와인</div>
-            </div>
-        </div>
-    </div>
-    <div class="question question-3" onclick=clickQ3()>
-        <div class="question-title-row">
-            <div><span class="question-num">3</span> <span class="question-text">가격대</span></div>
+            <div><span class="question-num">2</span> <span class="question-text">가격대</span></div>
             <div class="d-none question-response price-range" id="priceRange"></div>
         </div>
         <div class="d-none price-selector">
@@ -88,102 +150,28 @@
             </div>
         </div>
     </div>
-    <div class="question question-4" onclick=clickQ4()>
+    <div class="question question-3" onclick=clickQ3() id="q3-container">
         <div class="question-title-row">
-            <div><span class="question-num">4</span> <span class="question-text">어떤 음식이랑 드실 거에요?</span></div>
-            <div class="d-none question-response food-match" id="foodMatch"></div>
+            <div><span class="question-num">3</span> <span class="question-text">어디서 사실거에요?</span></div>
+            <div class="d-none question-response pickup-location" id="pickUpLocation"></div>
         </div>
-        <div class="food-matcher d-none">
-            <div class="food-match-row row1">
-                <div class="food-match-food col1" id="no-food">
-                    <div class="food-match-image no-food"></div>
-                    <div class="food-match-text">그냥 사둘게요</div>
+        <div class="store-selector d-none">
+            <div class="selector-box">
+                <div class="selector-row title">
+                    마트/ 백화점
+                    <i class="bi bi-chevron-down"></i>
                 </div>
-                <div class="food-match-food col2" id="steak">
-                    <div class="food-match-image steak"></div>
-                    <div class="food-match-text">고기/스테이크</div>
-                </div>
-                <div class="food-match-food col3" id="pasta">
-                    <div class="food-match-image pasta"></div>
-                    <div class="food-match-text">파스타</div>
-                </div>
+                <div class="selector-line"></div>
+                <div class="selector-row cand" id="lotte-mart">롯데마트</div>
+                <div class="selector-row cand" id="lotte-dep">롯데백화점</div>
+                <div class="selector-row cand" id="emart">이마트</div>
+                <div class="selector-row cand" id="ssg">신세계백화점</div>
+                <div class="selector-row selected-store"></div>
             </div>
-            <div class="food-match-detail row1">
-                <div class="food-match-detail-col steak red" id="steak-beef">
-                    소/양고기
-                </div>
-                <div class="food-match-detail-col steak red" id="steak-pork">
-                    돼지/오리고기
-                </div>
-                <div class="food-match-detail-col pasta red white" id="pasta-meat">
-                    미트/오일/크림
-                </div>
-                <div class="food-match-detail-col pasta red white" id="pasta-light">
-                    담백
-                </div>
-            </div>
-            <div class="food-match-row row2">
-                <div class="food-match-food col1" id="salad">
-                    <div class="food-match-image salad"></div>
-                    <div class="food-match-text">샐러드</div>
-                </div>
-                <div class="food-match-food col2" id="western">
-                    <div class="food-match-image western"></div>
-                    <div class="food-match-text">양식/한식요리</div>
-                </div>
-                <div class="food-match-food col3" id="fish">
-                    <div class="food-match-image fish"></div>
-                    <div class="food-match-text">생선/해산물</div>
-                </div>
-            </div>
-            <div class="food-match-detail row2">
-                <div class="food-match-detail-col western red white" id="western-oily">
-                    기름진 요리
-                </div>
-                <div class="food-match-detail-col western red white" id="western-spicy">
-                    매운양념요리
-                </div>
-                <div class="food-match-detail-col western red white" id="western-sweet">
-                    달짝지근한 요리
-                </div>
-                <div class="food-match-detail-col western red white" id="western-light">
-                    담백한 요리
-                </div>
-                <div class="food-match-detail-col fish white" id="fish-tuna">
-                    참치/연어
-                </div>
-                <div class="food-match-detail-col fish white" id="fish-sushi">
-                    스시
-                </div>
-                <div class="food-match-detail-col fish white" id="fish-oyster">
-                    굴
-                </div>
-            </div>
-            <div class="food-match-row row3">
-                <div class="food-match-food col1" id="dessert">
-                    <div class="food-match-image dessert"></div>
-                    <div class="food-match-text">핑거푸드/디저트</div>
-                </div>
-                <div class="food-match-food col2">
-                    <div class="food-match-image d-none"></div>
-                    <div class="food-match-text d-none"></div>
-                </div>
-                <div class="food-match-food col3">
-                    <div class="food-match-image d-none"></div>
-                    <div class="food-match-text d-none"></div>
-                </div>
-            </div>
-            <div class="food-match-detail row3">
-                <div class="food-match-detail-col dessert red white" id="dessert-salty">
-                    짭쪼름한 하몽/치즈/크래커
-                </div>
-                <div class="food-match-detail-col dessert red white" id="dessert-sweet">
-                    달달한 디저트
-                </div>
-            </div>
-
         </div>
+        <div class="d-none" id="map"></div>
     </div>
+
     <form class="submit-form d-none" method="POST" action="/" enctype="application/x-www-form-urlencoded">
         <button type="submit" class="ok-btn">
             추천 와인 보러가기!
@@ -232,8 +220,6 @@
     let storeLocations = {{ .storeLocations }};
     storeLocations = storeLocations.split("\n");
 </script>
-<script type="text/javascript"
-    src={{ .key | printf "//dapi.kakao.com/v2/maps/sdk.js?appkey=%v&libraries=services" }}></script>
 <script src="/static/js/kakaoMap.js"></script>
 <script src="/static/js/question.js"></script>
 {{end}}

@@ -32,7 +32,6 @@ create table querylogs (
   id serial primary key,
   store        varchar(255),
   price        varchar(64),
-  wine_type    varchar(64),
   food_match   varchar(255),
   created_at   timestamp not null
 );

@@ -28,7 +28,7 @@ func renderIndex(w http.ResponseWriter, r *http.Request) {
 
 func queryWine(w http.ResponseWriter, r *http.Request) {
 	info("Querying Wine...")
-	wines, err := data.QueryWines(r.FormValue("store"), r.FormValue("wine_type"), r.FormValue("food_match"), r.FormValue("price_range"))
+	wines, err := data.QueryWines(r.FormValue("store"), r.FormValue("food_match"), r.FormValue("price_range"))
 	if err != nil {
 		warning("ERROR during queryWine:", err)
 	}

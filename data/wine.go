@@ -33,7 +33,6 @@ type QueryLog struct {
 	Id        int
 	Store     string
 	Price     string
-	WineType  string    `db:"wine_type"`
 	FoodMatch string    `db:"food_match"`
 	CreatedAt time.Time `db:"created_at"`
 }
@@ -95,14 +94,6 @@ func (wine *Wine) GetWineType() string {
 	}
 }
 
-func (q *QueryLog) GetWineType() string {
-	if q.WineType == "red" {
-		return "레드 와인"
-	} else {
-		return "화이트 와인"
-	}
-}
-
 func WineById(id string) (wine Wine, err error) {
 	wine = Wine{}
 	err = db.Get(&wine, "SELECT * FROM wines WHERE key_id=$1", id)
@@ -112,27 +103,42 @@ func WineById(id string) (wine Wine, err error) {
 	return
 }
 
-func QueryWines(store, wineType, foodMatch, price string) (wines []Wine, err error) {
-	logQuery(store, wineType, foodMatch, price)
+func QueryWines(store, foodMatch, price string) (wines []Wine, err error) {
+	logQuery(store, foodMatch, price)
 	var statement string
-	if wineType == "red" {
-		foodMatch = foodMatchingRed[foodMatch]
-	} else {
-		foodMatch = foodMatchingWhite[foodMatch]
-	}
-	storeLocation := strings.Split(store, " ")
 	var location string
+	var wineType string
+
+	if foodMatch == "steak" {
+		wineType = "red"
+	} else if foodMatch == "fish" {
+		wineType = "white"
+	}
+	foodMatch = foodMatchingCode[foodMatch]
+
+	storeLocation := strings.Split(store, " ")
 	if len(storeLocation) > 1 {
 		store, location = storeLocation[0], storeLocation[1]
 	}
+
 	price = string(price[len(price)-1])
-	fmt.Println(store, location, wineType, foodMatch, price)
+
 	if store == "롯데마트" {
-		statement = "SELECT * FROM wines WHERE store = $1 AND price_type = $2 AND wine_type = $3 AND $4=any(food_matches) ORDER BY priority LIMIT 2"
-		err = db.Select(&wines, statement, store, price, wineType, foodMatch)
+		statement = "SELECT * FROM wines WHERE store = $1 AND price_type = $2 AND $3=any(food_matches) ORDER BY priority LIMIT 2"
+		if len(wineType) > 0 {
+			statement = strings.Replace(statement, "ORDER BY", "AND wine_type = $4 ORDER BY", 1)
+			err = db.Select(&wines, statement, store, price, foodMatch, wineType)
+		} else {
+			err = db.Select(&wines, statement, store, price, foodMatch)
+		}
 	} else {
-		statement = "SELECT * FROM wines WHERE store = $1 AND price_type = $2 AND wine_type = $3 AND $4=any(food_matches) AND $5=any(locations) ORDER BY priority LIMIT 2"
-		err = db.Select(&wines, statement, store, price, wineType, foodMatch, location)
+		statement = "SELECT * FROM wines WHERE store = $1 AND price_type = $2 AND $3=any(food_matches) AND $4=any(locations) ORDER BY priority LIMIT 2"
+		if len(wineType) > 0 {
+			statement = strings.Replace(statement, "ORDER BY", "AND wine_type = $5 ORDER BY", 1)
+			err = db.Select(&wines, statement, store, price, foodMatch, location, wineType)
+		} else {
+			err = db.Select(&wines, statement, store, price, foodMatch, location)
+		}
 	}
 	if err != nil || len(wines) == 0 {
 		warning("Error during QueryWines, maybe no matching wines:", err)
@@ -145,15 +151,14 @@ func GetAllWines() (wines []Wine) {
 	return
 }
 
-func logQuery(store, wineType, foodMatch, price string) {
+func logQuery(store, foodMatch, price string) {
 	query := QueryLog{
 		Store:     store,
 		Price:     priceRangeRaw[price],
-		WineType:  wineType,
 		FoodMatch: foodMatchingKorean[foodMatch],
 		CreatedAt: time.Now(),
 	}
-	_, err := db.NamedExec(`INSERT INTO querylogs (store, price, wine_type, food_match, created_at) VALUES (:store, :price, :wine_type, :food_match, :created_at)`, query)
+	_, err := db.NamedExec(`INSERT INTO querylogs (store, price, food_match, created_at) VALUES (:store, :price, :food_match, :created_at)`, query)
 	if err != nil {
 		warning("Error during logQuery:", err)
 	}

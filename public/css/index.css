@@ -38,7 +38,7 @@
     padding-left: 12px;
 }
 
-.question-1.active {
+.question-3.active {
     height: 300px;
 }
 
@@ -114,7 +114,7 @@
 
 .question-response {
     color: purple;
-    width: 200px;
+    width: 276px;
     font-weight: 700;
     padding-left: 40px;
     margin-top: 1px;
@@ -124,63 +124,11 @@
 }
 
 .question-2.active {
-    height: 220px;
-    justify-content: flex-start;
-}
-
-.question-3.active {
     height: 120px;
 }
 
-.question-4.active {
+.question-1.active {
     height: 450px;
-}
-
-.wine-selector-row {
-    justify-content: space-evenly;
-    align-items: center;
-    height:200px;
-    width:100%;
-    display:flex;
-}
-
-.wine-selector {
-    width: 150px;
-    height: 85%;
-    visibility:visible;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    display: flex;
-}
-
-.wine-image {
-    width: 81px;
-    height: 100px;
-}
-
-.wine-image.red{
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url(../icons/red_wine.png);
-}
-
-.wine-image.white{
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url(../icons/white_wine.png);
-}
-
-.wine-desc {
-    width: 108px;
-    height: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 9px;
-    border-radius: 40px;
-    font-size: 12px;
 }
 
 .price-selector-row {

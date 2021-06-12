@@ -17,7 +17,7 @@ import (
 
 var db *sqlx.DB
 
-var foodMatchingRed = map[string]string{
+var foodMatchingCode = map[string]string{
 	"no-food":       "A01",
 	"steak-beef":    "B01",
 	"steak-pork":    "B02",
@@ -28,26 +28,31 @@ var foodMatchingRed = map[string]string{
 	"western-spicy": "E02",
 	"western-sweet": "E03",
 	"western-light": "E04",
-	"dessert-salty": "F01",
-	"dessert-sweet": "F02",
-	"fish":          "G01",
+	"fish-tuna":     "F01",
+	"fish-sushi":    "F02",
+	"fish-oyster":   "F03",
+	"dessert-salty": "G01",
+	"dessert-sweet": "G02",
+}
+
+var foodMatchingRed = map[string]string{
+	"F01": "G01",
+	"F02": "G02",
+	"G01": "",
 }
 
 var foodMatchingWhite = map[string]string{
-	"no-food":       "A01",
-	"fish-tuna":     "B01",
-	"fish-sushi":    "B02",
-	"fish-oyster":   "B03",
-	"steak":         "C01",
-	"pasta-meat":    "D01",
-	"pasta-light":   "D02",
-	"salad":         "E01",
-	"western-oily":  "F01",
-	"western-spicy": "F02",
-	"western-sweet": "F03",
-	"western-light": "F04",
-	"dessert-salty": "G01",
-	"dessert-sweet": "G02",
+	"B01": "F01",
+	"B02": "F02",
+	"B03": "F03",
+	"C01": "",
+	"D01": "C01",
+	"D02": "C02",
+	"E01": "D01",
+	"F01": "E01",
+	"F02": "E02",
+	"F03": "E03",
+	"F04": "E04",
 }
 
 var foodMatchingKorean = map[string]string{
@@ -83,7 +88,7 @@ func init() {
 	initLogger()
 	info("Initiating DB")
 	var err error
-	DB_URL := "dbname=winecork sslmode=disable"
+	DB_URL := "dbname=winecork2 sslmode=disable"
 	if v, ok := os.LookupEnv("DATABASE_URL"); ok {
 		DB_URL = v
 	}
@@ -98,7 +103,7 @@ func init() {
 	}
 	defer csvFile.Close()
 
-	err = SaveCSV(csvFile)
+	// err = SaveCSV(csvFile)
 	if err != nil {
 		danger("Error during saveCSV:", err)
 	}
@@ -150,7 +155,7 @@ func addLocations(s string, locs []string) {
 
 func GetStoreLocations() string {
 	s := ""
-	for k, _ := range stores {
+	for k := range stores {
 		s += fmt.Sprintln(k)
 	}
 	return s
@@ -226,11 +231,36 @@ func parseCSV(csvFile io.Reader, urls map[string]string) (wines []Wine) {
 			wine.Sparkling = 0
 		}
 		foodMatches := strings.Split(line[14], ", ")
+		foodMatches = convertFoodMatch(wine.WineType, foodMatches)
 		wine.FoodMatches = pq.Array(foodMatches).(*pq.StringArray)
 		wines = append(wines, wine)
 	}
 	info("Parsing CSV finished.")
 	return
+}
+
+func convertFoodMatch(wineType string, code []string) []string {
+	converted := []string{}
+	convert := func(mapping map[string]string) {
+		for _, v := range code {
+			if x, ok := mapping[v]; ok {
+				if x != "" {
+					converted = append(converted, x)
+				}
+			} else {
+				converted = append(converted, v)
+			}
+		}
+	}
+	if wineType == "red" {
+		convert(foodMatchingRed)
+	} else if wineType == "white" {
+		convert(foodMatchingWhite)
+	} else {
+		danger("Not valid wine type: ", wineType)
+	}
+
+	return converted
 }
 
 func insertWines(wines []Wine) (err error) {

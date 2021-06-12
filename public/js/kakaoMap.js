@@ -1,9 +1,8 @@
 const show = document.querySelector("#pickUpLocation");
-const question = document.querySelector(".question-1");
+const question = document.querySelector(".question-3");
 const store = document.querySelector(".store-selector");
 
 const answerStore = document.querySelector("#answerStore");
-const answerWineType = document.querySelector("#answerWineType");
 const answerPriceRange = document.querySelector("#answerPriceRange");
 const answerFoodMatch = document.querySelector("#answerFoodMatch");
 
@@ -13,7 +12,7 @@ var container = document.getElementById('map'); //지도를 담을 영역의 DOM
 
 var options = { //지도를 생성할 때 필요한 기본 옵션
     center: new kakao.maps.LatLng(37.28734256346641, 127.0596781925285), //지도의 중심좌표.
-    level: 5 //지도의 레벨(확대, 축소 정도)
+    level: 6 //지도의 레벨(확대, 축소 정도)
 };
 var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
@@ -35,41 +34,6 @@ function getLocation() {
     }
 }
 getLocation()
-
-// const lotteMart = [
-//     {
-//         store: "롯데마트",
-//         lat: 37.28734256346641,
-//         lng: 127.0596781925285
-//     }
-// ]
-
-// const lotteDep = [
-//     {
-//         store: "롯데백화점",
-//         location: "본점",
-//         lat: 37.28834256346641,
-//         lng: 127.0596781925285
-//     }
-// ]
-
-// const emart = [
-//     {
-//         store: "이마트",
-//         location: "가양점",
-//         lat: 37.28934256346641,
-//         lng: 127.0596781925285
-//     }
-// ]
-
-// const ssg = [
-//     {
-//         store: "신세계백화점",
-//         location: "본점",
-//         lat: 37.28634256346641,
-//         lng: 127.0596781925285
-//     }
-// ]
 
 function createMarker(info) {
     let markerPos = new kakao.maps.LatLng(info.lat, info.lng);
@@ -101,6 +65,7 @@ function createMarker(info) {
         infowindow.close();
     });
     markers.push(marker);
+    console.log(marker)
 }
 
 
@@ -113,22 +78,6 @@ function clickMarker() {
     question.classList.remove("active")
     markerClicked = true
 }
-
-// for (let store of lotteMart) {
-//     createMarker(store)
-// }
-
-// for (let store of lotteDep) {
-//     createMarker(store)
-// }
-
-// for (let store of emart) {
-//     createMarker(store)
-// }
-
-// for (let store of ssg) {
-//     createMarker(store)
-// }
 
 var places = new kakao.maps.services.Places(map);
 var searchCallback = function (result, status, pagination) {
@@ -153,4 +102,3 @@ var searchCallback = function (result, status, pagination) {
         }
     }
 };
-
