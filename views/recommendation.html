@@ -20,7 +20,7 @@
     <div class="recommendation-row">
         {{ range .wines }}
         <a class="wine-card" href={{ .Key | printf "/detail?id=%v" }}>
-            <img class="recommendation-image" src={{ .Image | printf "%v" }}>
+            <img class="recommendation-image" src={{ 200 | .GetImage | printf "%v" }}>
             <div class="recommendation-name">{{ .WineName }}</div>
             <div class="recommendation-price">{{ .ConvertedPrice }}</div>
         </a>

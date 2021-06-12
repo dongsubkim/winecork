@@ -56,6 +56,7 @@ func renderDetail(w http.ResponseWriter, r *http.Request) {
 		"wine":           wine,
 		"convertedPrice": wine.ConvertedPrice(),
 		"wineDetail":     wine.GetWineInfo(),
+		"wineImage":      wine.GetImage(300),
 	})
 	if err != nil {
 		warning("Error during rendering detail: ", err)

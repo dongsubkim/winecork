@@ -69,6 +69,10 @@ func (wine *Wine) StripGrapes() string {
 	return s[2 : len(s)-1]
 }
 
+func (wine *Wine) GetImage(h int) string {
+	return strings.Replace(wine.Image, "/upload/", fmt.Sprintf("/upload/c_fill,w_130,h_%d/", h), 1)
+}
+
 func (wine *Wine) ListGrapes() string {
 	return listPqArray(wine.Grapes)
 }

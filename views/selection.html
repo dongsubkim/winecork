@@ -18,7 +18,7 @@
 <div class="selection-content">
     <div class="row selection-container">
         <div class="image-container">
-            <img class="selection-image" src={{ .wine.Image | printf "%s" }}>
+            <img class="selection-image" src={{ .wineImage | printf "%v" }}>
         </div>
         <div class="info-box">
             <div class="selection-name">{{ .wine.WineName }}</div>

@@ -58,7 +58,6 @@ func getImageUrl() map[string]string {
 			id := image.PublicID
 			id = strings.Split(id, "_")[0][len("WineCork/"):]
 			url := image.SecureURL
-			url = strings.Replace(url, "/upload/", "/upload/e_trim:10/", 1)
 			urls[id] = url
 		}
 	}
