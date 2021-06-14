@@ -181,10 +181,6 @@
             <input type="text" class="form-control" name="store" id="answerStore">
         </div>
         <div class="d-none">
-            <label for="answerWineType" class="form-label"></label>
-            <input type="text" class="form-control" name="wine_type" id="answerWineType">
-        </div>
-        <div class="d-none">
             <label for="answerPriceRange" class="form-label"></label>
             <input type="text" class="form-control" name="price_range" id="answerPriceRange">
         </div>
@@ -217,8 +213,7 @@
 </div>
 <script>
     let markerClicked = false;
-    let storeLocations = {{ .storeLocations }};
-    storeLocations = storeLocations.split("\n");
+    let storeLocations = JSON.parse({{ .storeLocations }});
 </script>
 <script src="/static/js/kakaoMap.js"></script>
 <script src="/static/js/question.js"></script>

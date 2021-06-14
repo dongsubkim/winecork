@@ -17,9 +17,10 @@ func WineRouter(r chi.Router) {
 
 func renderIndex(w http.ResponseWriter, r *http.Request) {
 	info("Rendering index page...")
+	storeInfo, _ := data.GetStoreLocations()
 	err := goview.Render(w, http.StatusOK, "index", goview.M{
 		"key":            os.Getenv("MAP_API_KEY"),
-		"storeLocations": data.GetStoreLocations(),
+		"storeLocations": string(storeInfo),
 	})
 	if err != nil {
 		return

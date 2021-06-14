@@ -3,7 +3,7 @@ package data
 import (
 	"bufio"
 	"encoding/csv"
-	"fmt"
+	"encoding/json"
 	"io"
 	"os"
 	"path"
@@ -14,6 +14,13 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 )
+
+type StoreInfo struct {
+	StoreType string `db:"store_type"`
+	Location  string `db:"store_location"`
+	Latitude  string
+	Longitude string
+}
 
 var db *sqlx.DB
 
@@ -82,7 +89,7 @@ var priceRangeRaw = map[string]string{
 	"price4": "₩4만↑",
 }
 
-var stores = map[string]bool{}
+var stores = []StoreInfo{}
 
 func init() {
 	initLogger()
@@ -107,6 +114,7 @@ func init() {
 	if err != nil {
 		danger("Error during saveCSV:", err)
 	}
+	parseStoreInfo()
 	info("DB is up and running.")
 }
 
@@ -147,18 +155,8 @@ func clearWineDB() {
 	info("DB Cleared.")
 }
 
-func addLocations(s string, locs []string) {
-	for _, v := range locs {
-		stores[fmt.Sprintf("%s %s", s, v)] = true
-	}
-}
-
-func GetStoreLocations() string {
-	s := ""
-	for k := range stores {
-		s += fmt.Sprintln(k)
-	}
-	return s
+func GetStoreLocations() ([]byte, error) {
+	return json.Marshal(stores)
 }
 
 func SaveCSV(csvFile io.Reader) (err error) {
@@ -169,6 +167,36 @@ func SaveCSV(csvFile io.Reader) (err error) {
 	if err != nil {
 		danger("ERROR during insertWines:", err)
 	}
+	return
+}
+
+func parseStoreInfo() (err error) {
+	info("Parsing store_coord.csv...")
+	csvFile, err := os.Open(path.Join("data", "store_coord.csv"))
+	if err != nil {
+		danger("Error opening store_coord.csv: ", err)
+	}
+	defer csvFile.Close()
+	reader := csv.NewReader(bufio.NewReader(csvFile))
+	for {
+		var line []string
+		line, err := reader.Read()
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			warning("error during parsing csv: ", err)
+			continue
+		}
+		location := strings.ReplaceAll(line[1], " ", "")
+		storeInfo := StoreInfo{
+			StoreType: line[0],
+			Location:  location,
+			Latitude:  line[2],
+			Longitude: line[3],
+		}
+		stores = append(stores, storeInfo)
+	}
+	info("Store info parsed.")
 	return
 }
 
@@ -206,7 +234,6 @@ func parseCSV(csvFile io.Reader, urls map[string]string) (wines []Wine) {
 		if len(locations) == 0 && store != "이마트" {
 			continue
 		}
-		addLocations(store, locations)
 		wine.Locations = pq.Array(locations).(*pq.StringArray)
 		wine.Price, _ = strconv.Atoi(line[5])
 		wine.PriceType = mappingPrice(wine.Price)

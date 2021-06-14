@@ -10,34 +10,46 @@ const stores = ["롯데마트", "롯데백화점", "신세계백화점", "이마
 
 var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 
-var options = { //지도를 생성할 때 필요한 기본 옵션
+var markers = [];
+
+var map = new kakao.maps.Map(container, { //지도를 생성할 때 필요한 기본 옵션
     center: new kakao.maps.LatLng(37.28734256346641, 127.0596781925285), //지도의 중심좌표.
     level: 6 //지도의 레벨(확대, 축소 정도)
-};
-var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+}); //지도 생성 및 객체 리턴
 
-var markers = [];
+getLocation()
+
+for (let store of storeLocations) {
+    createMarker(store)
+}
 
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((pos) => {
-            map.setCenter(new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude))
-            for (let store of stores) {
-                places.keywordSearch(store, searchCallback, {
-                    useMapCenter: true,
-                    radius: 10000
-                });
-            }
+            console.log(pos.coords);
+            map.setCenter(new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+            map.relayout();
+            map.setLevel(8);
+            // for (let store of stores) {
+            //     places.keywordSearch(store, searchCallback, {
+            //         useMapCenter: true,
+            //         radius: 10000
+            //     });
+            // }
         });
     } else {
         console.log("Geolocation is not supported by this browser.")
     }
 }
-getLocation()
 
 function createMarker(info) {
-    let markerPos = new kakao.maps.LatLng(info.lat, info.lng);
-    let title = info.store + " " + info.location
+    if (typeof info.Latitude == 'number') {
+        var markerPos = new kakao.maps.LatLng(info.Latitude, info.Longitude);
+    } else {
+        var markerPos = new kakao.maps.LatLng(parseFloat(info.Latitude), parseFloat(info.Longitude));
+    }
+
+    let title = info.StoreType + " " + info.Location
     let marker = new kakao.maps.Marker({
         position: markerPos,
         title: title,
@@ -65,7 +77,6 @@ function createMarker(info) {
         infowindow.close();
     });
     markers.push(marker);
-    console.log(marker)
 }
 
 
@@ -79,26 +90,26 @@ function clickMarker() {
     markerClicked = true
 }
 
-var places = new kakao.maps.services.Places(map);
-var searchCallback = function (result, status, pagination) {
-    if (status === kakao.maps.services.Status.OK) {
-        for (let store of result) {
-            names = store.place_name.split(" ");
-            if (!storeLocations.includes(store.place_name) && names[0] != "롯데마트") {
-                continue
-            }
-            if (stores.includes(names[0]) && names.length == 2) {
-                info = {
-                    store: names[0],
-                    location: names[1],
-                    lat: parseFloat(store.y),
-                    lng: parseFloat(store.x)
-                }
-                createMarker(info)
-            }
-        }
-        if (pagination.hasNextPage) {
-            pagination.nextPage()
-        }
-    }
-};
+// var places = new kakao.maps.services.Places(map);
+// var searchCallback = function (result, status, pagination) {
+//     if (status === kakao.maps.services.Status.OK) {
+//         for (let store of result) {
+//             names = store.place_name.split(" ");
+//             if (!storeLocations.includes(store.place_name) && names[0] != "롯데마트") {
+//                 continue
+//             }
+//             if (stores.includes(names[0]) && names.length == 2) {
+//                 info = {
+//                     StoreType: names[0],
+//                     Location: names[1],
+//                     Latitude: parseFloat(store.y),
+//                     Longitude: parseFloat(store.x)
+//                 }
+//                 createMarker(info)
+//             }
+//         }
+//         if (pagination.hasNextPage) {
+//             pagination.nextPage()
+//         }
+//     }
+// };

@@ -122,7 +122,7 @@ func QueryWines(store, foodMatch, price string) (wines []Wine, err error) {
 	}
 
 	price = string(price[len(price)-1])
-
+	info(store, location, foodMatch, price)
 	if store == "롯데마트" {
 		statement = "SELECT * FROM wines WHERE store = $1 AND price_type = $2 AND $3=any(food_matches) ORDER BY priority LIMIT 2"
 		if len(wineType) > 0 {

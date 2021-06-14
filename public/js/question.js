@@ -47,13 +47,13 @@ function clickQ3() {
         return
     }
     const question = document.getElementById("q3-container");
-    const map = document.getElementById('map');
+    map.relayout();
     if (markerClicked == true) {
         question.classList.remove("active")
         container.classList.add("d-none")
     } else {
         question.classList.add("active")
-        map.classList.remove("d-none")
+        container.classList.remove("d-none")
         storeSelector.classList.remove("d-none")
         show.classList.add("d-none")
     }
