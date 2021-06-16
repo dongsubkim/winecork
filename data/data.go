@@ -16,8 +16,8 @@ import (
 )
 
 type StoreInfo struct {
-	StoreType string `db:"store_type"`
-	Location  string `db:"store_location"`
+	StoreType string
+	Location  string
 	Latitude  string
 	Longitude string
 }
@@ -110,7 +110,7 @@ func init() {
 	}
 	defer csvFile.Close()
 
-	// err = SaveCSV(csvFile)
+	err = SaveCSV(csvFile)
 	if err != nil {
 		danger("Error during saveCSV:", err)
 	}
