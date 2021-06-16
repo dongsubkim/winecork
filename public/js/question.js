@@ -14,7 +14,7 @@ const foodDetailCol = document.querySelectorAll(".food-match-detail-col");
 let priceSelector = document.getElementsByClassName("price-rect");
 
 let foodMatchSelected = false;
-questionContainer.addEventListener("click", allSelected)
+// questionContainer.addEventListener("click", allSelected)
 
 function clickQ1() {
     let question = document.querySelector(".question-1")
@@ -179,17 +179,17 @@ selectOptions.forEach(el => {
     })
 })
 
-function allSelected() {
-    if (answerStore && answerStore.value.length == 0) {
-        return false
-    }
-    if (answerPriceRange && answerPriceRange.value.length == 0) {
-        return false
-    }
-    if (answerFoodMatch && answerFoodMatch.value.length == 0) {
-        return false
-    }
-    submitForm.classList.remove("d-none")
-    submitButton.classList.add("show")
-    return true
-}
+// function allSelected() {
+//     if (answerStore && answerStore.value.length == 0) {
+//         return false
+//     }
+//     if (answerPriceRange && answerPriceRange.value.length == 0) {
+//         return false
+//     }
+//     if (answerFoodMatch && answerFoodMatch.value.length == 0) {
+//         return false
+//     }
+//     submitForm.classList.remove("d-none")
+//     submitButton.classList.add("show")
+//     return true
+// }

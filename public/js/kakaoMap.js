@@ -76,6 +76,7 @@ function createMarker(info) {
         // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
         infowindow.close();
     });
+
     markers.push(marker);
 }
 
@@ -88,6 +89,8 @@ function clickMarker() {
     store.classList.add("d-none")
     question.classList.remove("active")
     markerClicked = true
+    submitForm.classList.remove("d-none")
+    submitButton.classList.add("show")
 }
 
 // var places = new kakao.maps.services.Places(map);
