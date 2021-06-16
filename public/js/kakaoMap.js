@@ -26,7 +26,6 @@ for (let store of storeLocations) {
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((pos) => {
-            console.log(pos.coords);
             map.setCenter(new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
             map.relayout();
             map.setLevel(8);
@@ -38,8 +37,6 @@ function getLocation() {
             //     });
             // }
         });
-    } else {
-        console.log("Geolocation is not supported by this browser.")
     }
 }
 
@@ -80,6 +77,7 @@ function createMarker(info) {
 
     markers.push(marker);
 }
+
 
 function clickMarker() {
     show.innerText = this.getTitle();
