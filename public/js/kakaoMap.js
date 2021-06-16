@@ -83,6 +83,7 @@ function createMarker(info) {
 
 
 function clickMarker() {
+    console.log("Marker Clicked")
     show.innerText = this.getTitle();
     answerStore.value = this.getTitle();
     show.classList.remove("d-none")

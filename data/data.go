@@ -110,7 +110,7 @@ func init() {
 	}
 	defer csvFile.Close()
 
-	err = SaveCSV(csvFile)
+	// err = SaveCSV(csvFile)
 	if err != nil {
 		danger("Error during saveCSV:", err)
 	}

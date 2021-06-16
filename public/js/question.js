@@ -55,18 +55,11 @@ function clickQ3() {
         question.classList.remove("active")
         container.classList.add("d-none")
     } else {
-        console.log("q3-container active")
         question.classList.add("active")
-        console.log("container remove d-none")
         container.classList.remove("d-none")
-        console.log("storeSelector remove d-none")
         storeSelector.classList.remove("d-none")
-        console.log("show add d-none")
         show.classList.add("d-none")
-        console.log("Q3 should be expanded now.")
         map.relayout();
-        console.log("Map relayouted.")
-        console.log("-------------------------")
     }
     markerClicked = false;
 }
