@@ -1,9 +1,13 @@
+.container {
+    overflow: auto;
+}
+
 .middle-bar {
     height: 200px;
 }
 
 .selection-content {
-    width: 406px;
+    width: 100%;
     height: 400px; 
     padding-left: 32px;
     padding-right: 32px;
@@ -72,6 +76,7 @@
     top: 267px;
     overflow: visible;
     font-size: 12px;
+    padding-right: 16px;
 }
 
 .selection-detail {
