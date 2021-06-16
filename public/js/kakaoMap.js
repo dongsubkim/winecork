@@ -89,6 +89,8 @@ function clickMarker() {
     markerClicked = true
     submitForm.classList.remove("d-none")
     submitButton.classList.add("show")
+    question.classList.remove("active")
+    container.classList.add("d-none")
 }
 
 // var places = new kakao.maps.services.Places(map);

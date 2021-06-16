@@ -47,18 +47,25 @@ function clickQ3() {
         return
     }
     const question = document.getElementById("q3-container");
+
+    question.classList.add("active")
+    container.classList.remove("d-none")
+    storeSelector.classList.remove("d-none")
+    show.classList.add("d-none")
+    map.relayout();
+
     question.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
     map.relayout();
-    if (markerClicked == true) {
-        question.classList.remove("active")
-        container.classList.add("d-none")
-    } else {
-        question.classList.add("active")
-        container.classList.remove("d-none")
-        storeSelector.classList.remove("d-none")
-        show.classList.add("d-none")
-        map.relayout();
-    }
+    // if (markerClicked == true) {
+    //     question.classList.remove("active")
+    //     container.classList.add("d-none")
+    // } else {
+    //     question.classList.add("active")
+    //     container.classList.remove("d-none")
+    //     storeSelector.classList.remove("d-none")
+    //     show.classList.add("d-none")
+    //     map.relayout();
+    // }
     markerClicked = false;
 }
 
