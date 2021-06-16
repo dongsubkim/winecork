@@ -81,7 +81,6 @@ function createMarker(info) {
     markers.push(marker);
 }
 
-
 function clickMarker() {
     show.innerText = this.getTitle();
     answerStore.value = this.getTitle();
@@ -92,7 +91,6 @@ function clickMarker() {
     markerClicked = true
     submitForm.classList.remove("d-none")
     submitButton.classList.add("show")
-    console.log("Marker Clicked")
 }
 
 // var places = new kakao.maps.services.Places(map);
