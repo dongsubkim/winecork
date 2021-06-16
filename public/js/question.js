@@ -48,6 +48,7 @@ function clickQ3() {
         return
     }
     const question = document.getElementById("q3-container");
+    question.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
     map.relayout();
     console.log("markerClicked:", markerClicked)
     if (markerClicked == true) {
