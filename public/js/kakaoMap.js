@@ -30,6 +30,7 @@ function getLocation() {
             map.setCenter(new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
             map.relayout();
             map.setLevel(8);
+            map.relayout();
             // for (let store of stores) {
             //     places.keywordSearch(store, searchCallback, {
             //         useMapCenter: true,

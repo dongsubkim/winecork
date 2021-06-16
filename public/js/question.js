@@ -42,12 +42,14 @@ function clickQ2() {
 }
 
 function clickQ3() {
+    console.log("q3 clicked")
     if (answerPriceRange.value.length == 0) {
         alert("가격을 먼저 골라주세요.")
         return
     }
     const question = document.getElementById("q3-container");
     map.relayout();
+    console.log("markerClicked:", markerClicked)
     if (markerClicked == true) {
         question.classList.remove("active")
         container.classList.add("d-none")
@@ -56,6 +58,7 @@ function clickQ3() {
         container.classList.remove("d-none")
         storeSelector.classList.remove("d-none")
         show.classList.add("d-none")
+        map.relayout();
     }
     markerClicked = false;
 }
