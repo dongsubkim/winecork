@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -10,6 +11,7 @@ import (
 	"github.com/cloudinary/cloudinary-go/api/admin"
 	"github.com/cloudinary/cloudinary-go/api/admin/search"
 	"github.com/joho/godotenv"
+	"github.com/lib/pq"
 )
 
 var logger *log.Logger
@@ -74,4 +76,10 @@ func getImageUrl() map[string]string {
 	}
 
 	return urls
+}
+
+func StringfyPqArray(arr *pq.StringArray) string {
+	s := fmt.Sprint(arr)
+	s = s[2 : len(s)-1]
+	return strings.Join(strings.Split(s, " "), ", ")
 }

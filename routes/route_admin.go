@@ -1,9 +1,12 @@
 package routes
 
 import (
+	"encoding/csv"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
+	"strings"
 
 	"github.com/foolin/goview"
 	"github.com/go-chi/chi/v5"
@@ -89,4 +92,41 @@ func uploadCsv(w http.ResponseWriter, r *http.Request) {
 
 func downloadDB(w http.ResponseWriter, r *http.Request) {
 	info("Downloading Wine DB...")
+	wines := data.GetAllWines()
+	csvWriter := csv.NewWriter(w)
+	header := []string{"Priority", "Key", "Store", "Wine_Name", "Location", "Price", "Wine_Sort", "Wine_Origin", "Grape_1", "Grape_2", "Grape_3", "Acid", "Sweet", "Sparkling", "Food_match"}
+	err := csvWriter.Write(header)
+	if err != nil {
+		warning("Fail to create csv file:", err)
+		return
+	}
+	for _, wine := range wines {
+		grapes := []string{"", "", ""}
+		rawGrapes := strings.Split(data.StringfyPqArray(wine.Grapes), ", ")
+		copy(grapes, rawGrapes)
+
+		line := []string{
+			strconv.Itoa(wine.Priority),
+			wine.Key,
+			wine.Store,
+			wine.WineName,
+			data.StringfyPqArray(wine.Locations),
+			strconv.Itoa(wine.Price),
+			wine.WineType,
+			wine.Country,
+			grapes[0],
+			grapes[1],
+			grapes[2],
+			strconv.Itoa(wine.Acidity),
+			strconv.Itoa(wine.Sweetness),
+			strconv.Itoa(wine.Sparkling),
+			data.StringfyPqArray(wine.FoodMatches),
+		}
+		err := csvWriter.Write(line)
+		if err != nil {
+			warning("Fail to write a line to csv file: ", err)
+		}
+
+	}
+	csvWriter.Flush()
 }
