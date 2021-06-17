@@ -17,6 +17,7 @@ func AdminRouter() http.Handler {
 	r.Get("/queries", getUserQueries)
 	r.Get("/feedbacks", getFeedbacks)
 	r.Post("/upload", uploadCsv)
+	r.Get("/download", downloadDB)
 	return r
 }
 
@@ -84,4 +85,8 @@ func uploadCsv(w http.ResponseWriter, r *http.Request) {
 		danger("Error during SaveCSV:", err)
 	}
 	http.Redirect(w, r, "/", http.StatusNoContent)
+}
+
+func downloadDB(w http.ResponseWriter, r *http.Request) {
+	info("Downloading Wine DB...")
 }

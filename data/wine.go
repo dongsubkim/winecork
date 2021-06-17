@@ -106,7 +106,6 @@ func WineById(id string) (wine Wine, err error) {
 func QueryWines(store, foodMatch, price string) (wines []Wine, err error) {
 	logQuery(store, foodMatch, price)
 	var statement string
-	// var location string
 	var wineType string
 
 	if foodMatch == "steak" {
@@ -118,12 +117,10 @@ func QueryWines(store, foodMatch, price string) (wines []Wine, err error) {
 
 	storeLocation := strings.Split(store, " ")
 	if len(storeLocation) > 1 {
-		// store, location = storeLocation[0], storeLocation[1]
 		store, _ = storeLocation[0], storeLocation[1]
 	}
 
 	price = string(price[len(price)-1])
-	// info(store, location, foodMatch, price, wineType)
 
 	statement = "SELECT * FROM wines WHERE store = $1 AND price_type = $2 AND $3=any(food_matches) ORDER BY priority LIMIT 2"
 	if len(wineType) > 0 {
@@ -133,23 +130,6 @@ func QueryWines(store, foodMatch, price string) (wines []Wine, err error) {
 		err = db.Select(&wines, statement, store, price, foodMatch)
 	}
 
-	// if store == "롯데마트" {
-	// 	statement = "SELECT * FROM wines WHERE store = $1 AND price_type = $2 AND $3=any(food_matches) ORDER BY priority LIMIT 2"
-	// 	if len(wineType) > 0 {
-	// 		statement = strings.Replace(statement, "ORDER BY", "AND wine_type = $4 ORDER BY", 1)
-	// 		err = db.Select(&wines, statement, store, price, foodMatch, wineType)
-	// 	} else {
-	// 		err = db.Select(&wines, statement, store, price, foodMatch)
-	// 	}
-	// } else {
-	// 	statement = "SELECT * FROM wines WHERE store = $1 AND price_type = $2 AND $3=any(food_matches) AND $4=any(locations) ORDER BY priority LIMIT 2"
-	// 	if len(wineType) > 0 {
-	// 		statement = strings.Replace(statement, "ORDER BY", "AND wine_type = $5 ORDER BY", 1)
-	// 		err = db.Select(&wines, statement, store, price, foodMatch, location, wineType)
-	// 	} else {
-	// 		err = db.Select(&wines, statement, store, price, foodMatch, location)
-	// 	}
-	// }
 	if err != nil || len(wines) == 0 {
 		warning("Error during QueryWines, maybe no matching wines:", err)
 	}

@@ -104,29 +104,13 @@ func init() {
 	if err != nil {
 		danger("ERROR connecting postgres db:", err)
 	}
-	csvFile, err := os.Open(path.Join("data", "wine_db.csv"))
-	if err != nil {
-		danger("Error opening wine_db.csv: ", err)
-	}
-	defer csvFile.Close()
 
-	// err = SaveCSV(csvFile)
-	if err != nil {
-		danger("Error during saveCSV:", err)
-	}
 	parseStoreInfo()
 	info("DB is up and running.")
 }
 
 func clearWineDB() {
 	info("Clearing Wine DB...")
-	// path := filepath.Join("data", "setup.sql")
-
-	// c, err := ioutil.ReadFile(path)
-	// if err != nil {
-	// 	danger("Error during reading setup.sql file:", err)
-	// }
-	// schema := string(c)
 	schema := `
 	drop table if exists wines;
 	
