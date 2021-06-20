@@ -16,10 +16,7 @@ import (
 )
 
 func main() {
-	f, _ := os.Create("/var/log/golang/golang-server.log")
-	defer f.Close()
-	log.SetOutput(f)
-
+	log.Println("Main func called")
 	r := chi.NewRouter()
 
 	r.Use(middleware.Logger)
