@@ -111,12 +111,12 @@ func init() {
 	if err != nil {
 		danger("ERROR connecting postgres db:", err)
 	}
-	formatDB()
+
 	parseStoreInfo()
 	info("DB is up and running.")
 }
 
-func formatDB() {
+func FormatDB() {
 	info("Formatting DB...")
 
 	schema := `

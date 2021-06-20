@@ -4,4 +4,10 @@
 
 {{ define "content" }}
 {{ include "partials/navbar"}}
+
+<div class="row">
+    <main>
+        <a class="format btn btn-danger" href="/{{ .adminRoute }}/formatDB">포멧 DB</a>
+    </main>
+</div>
 {{ end }}

@@ -27,6 +27,9 @@ github.com/google/uuid
 ## explicit
 github.com/jmoiron/sqlx
 github.com/jmoiron/sqlx/reflectx
+# github.com/joho/godotenv v1.3.0
+## explicit
+github.com/joho/godotenv
 # github.com/lib/pq v1.10.2
 ## explicit
 github.com/lib/pq

@@ -21,6 +21,7 @@ func AdminRouter() http.Handler {
 	r.Get("/feedbacks", getFeedbacks)
 	r.Post("/upload", uploadCsv)
 	r.Get("/download", downloadDB)
+	r.Get("/formatDB", formatDB)
 	return r
 }
 
@@ -129,4 +130,8 @@ func downloadDB(w http.ResponseWriter, r *http.Request) {
 
 	}
 	csvWriter.Flush()
+}
+
+func formatDB(w http.ResponseWriter, r *http.Request) {
+	data.FormatDB()
 }

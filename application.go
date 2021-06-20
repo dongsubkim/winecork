@@ -10,10 +10,19 @@ import (
 	"strings"
 	"time"
 
+	"github.com/joho/godotenv"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/project_winecork/routes"
 )
+
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Fail to load .env file")
+	}
+}
 
 func main() {
 	log.Println("Main func called")

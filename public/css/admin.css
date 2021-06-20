@@ -58,3 +58,9 @@ tr {
     max-width: 120px;
     width: 120px;
 }
+
+.format {
+    position: relative;
+    top: 80px;
+    left: 20px;
+}
