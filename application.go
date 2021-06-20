@@ -16,14 +16,11 @@ import (
 	"github.com/project_winecork/routes"
 )
 
-func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("Error loading .env file")
-	}
-}
-
 func main() {
+	f, _ := os.Create("/var/log/golang/golang-server.log")
+	defer f.Close()
+	log.SetOutput(f)
+
 	r := chi.NewRouter()
 
 	r.Use(middleware.Logger)
@@ -42,6 +39,11 @@ func main() {
 
 	r.Mount(fmt.Sprintf("/%s", os.Getenv("ADMIN_ROUTE")), routes.AdminRouter())
 	r.Mount("/feedback", routes.FeedbackRouter())
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
 
 	port := os.Getenv("PORT")
 	log.Println("Serving on Port:", port)

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/csv"
 	"encoding/json"
+	"fmt"
 	"io"
 	"os"
 	"path"
@@ -95,7 +96,13 @@ func init() {
 	initLogger()
 	info("Initiating DB")
 	var err error
-	DB_URL := "dbname=winecork2 sslmode=disable"
+	// DB_URL := "dbname=winecork2 sslmode=disable"
+	hostname := os.Getenv("RDS_HOSTNAME")
+	dbname := os.Getenv("RDS_DB_NAME")
+	username := os.Getenv("RDS_USERNAME")
+	password := os.Getenv("RDS_PASSWORD")
+	port := os.Getenv("RDS_PORT")
+	DB_URL := fmt.Sprintf("host=%s dbname=%s user=%s password=%s port=%s", hostname, dbname, username, password, port)
 	if v, ok := os.LookupEnv("DATABASE_URL"); ok {
 		DB_URL = v
 	}
