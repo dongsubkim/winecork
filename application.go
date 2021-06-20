@@ -37,6 +37,9 @@ func main() {
 	r.Mount("/feedback", routes.FeedbackRouter())
 
 	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
+	}
 	log.Println("Serving on Port:", port)
 	http.ListenAndServe(fmt.Sprintf(":%v", port), r)
 }
