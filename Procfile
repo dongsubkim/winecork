@@ -1,1 +1,0 @@
-web: bin/project_winecork

@@ -10,7 +10,6 @@ import (
 	"github.com/cloudinary/cloudinary-go"
 	"github.com/cloudinary/cloudinary-go/api/admin"
 	"github.com/cloudinary/cloudinary-go/api/admin/search"
-	"github.com/joho/godotenv"
 	"github.com/lib/pq"
 )
 
@@ -21,11 +20,7 @@ func initLogger() {
 	logger = log.Default()
 	logger.SetFlags(log.Ldate)
 	logger.SetFlags(log.Ltime)
-
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("Error loading .env file")
-	}
+	var err error
 	cld, err = cloudinary.NewFromParams(os.Getenv("CLOUDINARY_CLOUD_NAME"), os.Getenv("CLOUDINARY_KEY"), os.Getenv("CLOUDINARY_SECRET"))
 	if err != nil {
 		log.Println("Error loading cloudinary api")

@@ -103,6 +103,7 @@ func init() {
 	password := os.Getenv("RDS_PASSWORD")
 	port := os.Getenv("RDS_PORT")
 	DB_URL := fmt.Sprintf("host=%s dbname=%s user=%s password=%s port=%s", hostname, dbname, username, password, port)
+	log.Println("DB_URL:", DB_URL)
 	if v, ok := os.LookupEnv("DATABASE_URL"); ok {
 		DB_URL = v
 	}

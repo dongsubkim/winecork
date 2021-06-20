@@ -12,7 +12,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/joho/godotenv"
 	"github.com/project_winecork/routes"
 )
 
@@ -39,11 +38,6 @@ func main() {
 
 	r.Mount(fmt.Sprintf("/%s", os.Getenv("ADMIN_ROUTE")), routes.AdminRouter())
 	r.Mount("/feedback", routes.FeedbackRouter())
-
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("Error loading .env file")
-	}
 
 	port := os.Getenv("PORT")
 	log.Println("Serving on Port:", port)
