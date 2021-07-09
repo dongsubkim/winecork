@@ -211,9 +211,16 @@
         </div>
     </div>
 </div>
+<div class="loading-view" onclick=disappear()>
+    <div class="loading-gif">
+    </div>
+</div>
 <script>
     let markerClicked = false;
     let storeLocations = JSON.parse({{ .storeLocations }});
+    function disappear() {
+        document.querySelector(".loading-view").classList.add("d-none");
+    };
 </script>
 <script src="/static/js/kakaoMap.js"></script>
 <script src="/static/js/question.js"></script>
