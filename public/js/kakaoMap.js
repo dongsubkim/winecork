@@ -17,11 +17,40 @@ var map = new kakao.maps.Map(container, { //지도를 생성할 때 필요한 �
     level: 6 //지도의 레벨(확대, 축소 정도)
 }); //지도 생성 및 객체 리턴
 
-getLocation()
+let storeLocations;
 
-for (let store of storeLocations) {
-    createMarker(store)
+
+async function getStoreLocations() {
+    await $.ajax({
+        type: "GET",
+        url: "/storeLocations",
+        dataType: "json"
+    }).done(function (resp) {
+        storeLocations = resp;
+        showMarkers()
+    }).fail(function (error) {
+        alert(error);
+    });
 }
+
+getStoreLocations()
+
+function showMarkers() {
+    getLocation()
+    for (let store of storeLocations) {
+        createMarker(store)
+    }
+    map.relayout();
+}
+// let storeLocations = await getStoreLocations();
+
+// console.log(storeLocations)
+
+// getLocation()
+
+// for (let store of storeLocations) {
+//     createMarker(store)
+// }
 
 function getLocation() {
     if (navigator.geolocation) {

@@ -14,15 +14,14 @@ func WineRouter(r chi.Router) {
 	r.Get("/", renderIndex)
 	r.Post("/", queryWine)
 	r.Get("/detail", renderDetail)
+	r.Get("/storeLocations", storeLocations)
 }
 
 func renderIndex(w http.ResponseWriter, r *http.Request) {
 	log.Println("renderIndex called.")
 	info("Rendering index page...")
-	storeInfo, _ := data.GetStoreLocations()
 	err := goview.Render(w, http.StatusOK, "index", goview.M{
-		"key":            os.Getenv("MAP_API_KEY"),
-		"storeLocations": string(storeInfo),
+		"key": os.Getenv("MAP_API_KEY"),
 	})
 	if err != nil {
 		return
@@ -66,4 +65,11 @@ func renderDetail(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusInternalServerError)
 		return
 	}
+}
+
+func storeLocations(w http.ResponseWriter, r *http.Request) {
+	info("storeLocations called")
+	w.Header().Set("Content-Type", "application/json")
+	storeInfo, _ := data.GetStoreLocations()
+	w.Write(storeInfo)
 }
