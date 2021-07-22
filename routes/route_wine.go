@@ -20,6 +20,7 @@ func WineRouter(r chi.Router) {
 func renderIndex(w http.ResponseWriter, r *http.Request) {
 	log.Println("renderIndex called.")
 	info("Rendering index page...")
+	info("1")
 	err := goview.Render(w, http.StatusOK, "index", goview.M{
 		"key": os.Getenv("MAP_API_KEY"),
 	})
